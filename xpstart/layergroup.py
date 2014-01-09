@@ -12,9 +12,9 @@ class Layergroup():
         if xpPath.endswith("/") or xpPath.endswith("\\"):
             xpPath = xpPath[:-1]
         self.xpPath = xpPath
-        
+        # The name of the sceneryFolder !Don't change!
         self.sceneryFolder = "Custom Scenery"
-        
+        # All sceneries as an object
         self.sceneries = self.loadXpSceneries()
         
         
@@ -25,6 +25,11 @@ class Layergroup():
         """
         sceneryPath = "%s/%s" % (self.xpPath,self.sceneryFolder)
         sceneries = []
-        print os.listdir(sceneryPath)
         
+        for entry in os.listdir(sceneryPath):
+            # Path to the entry
+            abspath = "%s/%s" % (sceneryPath,entry)
+            # A scenery has to be a directory
+            if os.path.isdir(abspath):
+                sceneries.append(scenery.Scenery(abspath))
         return sceneries
