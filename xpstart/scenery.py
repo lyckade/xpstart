@@ -24,6 +24,8 @@ class Scenery():
         self.aptDatPath = "%s/%s" % (self.path,self.__pathAptDat)
         # If there is an apt.dat file
         self.aptDat = os.path.exists(self.aptDatPath)
+        # If there is a library.txt file
+        self.libraryTxt = os.path.exists("%s/library.txt" % (self.path))
         # How many objects are inside the scenery
         self.counterObjects = self.countObjects()
         # Icao codes of the scenery (if there is an apt.dat)
@@ -53,14 +55,19 @@ class Scenery():
                 continue
             for objFile in files:
                 fileElements = objFile.split(".")
-                if fileElements[1] in self.__objTypes and fileElements[0] not in exceptionFiles:
+                if "." in objFile and fileElements[1] in self.__objTypes and fileElements[0] not in exceptionFiles:
                     counter[fileElements[1]] = counter[fileElements[1]] + 1
+
         return counter
     
     #===========================================================================
     # Searches the icao codes in the apt.dat
     #===========================================================================
     def searchIcaoCodes(self):
+        """
+        Returns a list with all the ICAO codes find in the apt.dat file of the
+        scenery. If there is no apt.dat file the list will be empty []
+        """
         # If there is no apt.dat an empty list is returned
         if not self.aptDat:
             return []
