@@ -1,52 +1,76 @@
 import os
+import xpstart
 
-class Scenery():
+class Scenery(xpstart.Base):
     """
     The scenery class holds informations about a x-plane scenery. To create a scenery object
     just the path to the scenery goes to the constructor. 
     """
-    #===========================================================================
-    # 
-    # @type path: string
-    # @param path: the path to the scenery without ending "/"
-    #===========================================================================
+
     def __init__(self,path):
-        # Path to the apt.dat File begining at scenery folder
-        self.__pathAptDat = "/Earth nav data/apt.dat"
-        # Object Types
-        self.__objTypes = ["fac","for","lin","obj","pol"]
+        """
+        @type path: string
+        @param path: the path to the scenery without ending "/"
+        """
         
+        xpstart.Base.__init__(self)
+        
+        #=======================================================================
+        # Path to the apt.dat File begining at scenery folder
+        #=======================================================================
+        self.__pathAptDat = "/Earth nav data/apt.dat"
+        
+        
+        #=======================================================================
         # The path to the scenery
+        # If there is a / at the end it will be removed. 
+        #=======================================================================
         if path.endswith("/") or path.endswith("\\"):
             path = path[:-1]
         self.path = path
+        
+        #=======================================================================
         # The path to the apt.dat file
+        # Were the apt.dat file is, when a scenery has one
+        #=======================================================================
         self.aptDatPath = "%s/%s" % (self.path,self.__pathAptDat)
-        # If there is an apt.dat file
+        
+        
+        #=======================================================================
+        # Is true, when there is a apt.dat file
+        # If apt.dat data is requested that parameter is asked
+        #=======================================================================
         self.aptDat = os.path.exists(self.aptDatPath)
+        
+        #=======================================================================
         # If there is a library.txt file
+        #=======================================================================
         self.libraryTxt = os.path.exists("%s/library.txt" % (self.path))
-        # How many objects are inside the scenery
+        
+        
+        #=======================================================================
+        # Counts the objects and stores them into that parameter
+        # The parameter is a dictionary like the __objTypes
+        #=======================================================================
         self.counterObjects = self.countObjects()
-        # Icao codes of the scenery (if there is an apt.dat)
+        
+        
+        #=======================================================================
+        # Icao codes of the scenery if there is an apt.dat
+        # One scenery can have many icao codes. The parameter is type list
+        #=======================================================================
         self.icaoCodes = self.searchIcaoCodes()
         
         
- 
-    
-    
-    #===========================================================================
-    # Searches the scenery for objects
-    #===========================================================================
     def countObjects(self):
         """
         Counts all objects of the scenery and returns a dictionary with all
-        the defined object types.
+        the defined object types an the number how often they occur.
         """
         counter = {}
         exceptionDirs = ["opensceneryx"]
         exceptionFiles = ["placeholder"]
-        for objType in self.__objTypes:
+        for objType in self.objTypes:
             counter[objType] = 0
         for path,dirs,files in os.walk(self.path):
             if os.path.basename(path) in exceptionDirs:
@@ -55,7 +79,7 @@ class Scenery():
                 continue
             for objFile in files:
                 fileElements = objFile.split(".")
-                if "." in objFile and fileElements[1] in self.__objTypes and fileElements[0] not in exceptionFiles:
+                if "." in objFile and fileElements[1] in self.objTypes and fileElements[0] not in exceptionFiles:
                     counter[fileElements[1]] = counter[fileElements[1]] + 1
 
         return counter

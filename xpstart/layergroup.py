@@ -1,5 +1,21 @@
 import scenery
+import xpstart
 import os
+
+class Layer(xpstart.Base):
+    """
+    The model for a scenery layer
+    """
+    
+    def __init__(self,name):
+        xpstart.Base.__init__(self)
+        
+        self.name = name
+        self.description = ""
+        self.defaultRules = []
+        
+        self.__ruleCommands = {
+                    }
 
 class Layergroup():
     """
