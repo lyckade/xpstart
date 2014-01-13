@@ -22,12 +22,25 @@ class Scenery(xpstart.Base):
         
         
         #=======================================================================
+        # The file were the data of the scenerie is cached
+        # That parameter is overwritten
+        # In one file there can be stored more data. The logic for storing is
+        # classname:title:dataname:data
+        #=======================================================================
+        self.cacheFile = "cache_sceneries.txt"
+        
+        #=======================================================================
         # The path to the scenery
         # If there is a / at the end it will be removed. 
         #=======================================================================
         if path.endswith("/") or path.endswith("\\"):
             path = path[:-1]
         self.path = path
+        
+        #=======================================================================
+        # The title of a scenery is defined by the folder name
+        #=======================================================================
+        self.title = os.path.basename(self.path)
         
         #=======================================================================
         # The path to the apt.dat file
@@ -81,8 +94,18 @@ class Scenery(xpstart.Base):
                 fileElements = objFile.split(".")
                 if "." in objFile and fileElements[1] in self.objTypes and fileElements[0] not in exceptionFiles:
                     counter[fileElements[1]] = counter[fileElements[1]] + 1
-
+        self.writeCounter(counter)
         return counter
+    
+    def writeCounter(self,counter):
+        data = ""
+        for key,val in counter.items():
+            data = "%s%s.%s;" % (data,key,val)
+        print data    
+        self.writeCache("counter", data)
+        
+    def readCounter(self):
+        print "read"
     
     #===========================================================================
     # Searches the icao codes in the apt.dat
@@ -104,4 +127,6 @@ class Scenery(xpstart.Base):
                 icaoCodes.append(icaoCode)
         aptDatFile.close()
         return icaoCodes
+    
+
     
