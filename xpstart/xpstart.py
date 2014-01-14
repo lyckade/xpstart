@@ -51,6 +51,8 @@ class Base():
         out = {}
         entries = s.split(self.cacheDelimiterEntry)
         for e in entries:
+            if e == "":
+                continue
             c = e.split(self.cacheDelimiterKey)
             out[c[0]] = c[1]
         return out
@@ -58,7 +60,7 @@ class Base():
         
     def makeString(self,a):
         """
-        Makes a string of a iterable object. At the moment just dictionary is supported.
+        Makes a string of a list or dictionary object. 
         The method is used to generate the data which will be written into the cache.
         @param a: dictionary which should be transformed to a string to write it into the cache
         """
@@ -66,7 +68,9 @@ class Base():
         if type(a) is dict:
             for key,val in a.items():
                 out = "%s%s%s%s%s" % (out,key,self.cacheDelimiterKey,val,self.cacheDelimiterEntry)
-            return out[:-1]
+            return out
+        elif type(a) is list:
+            return "%s%s" % (self.cacheDelimiterEntry.join(a),self.cacheDelimiterEntry)
                 
     def parseCacheLine(self,line):
         """

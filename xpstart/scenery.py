@@ -115,6 +115,9 @@ class Scenery(xpstart.Base):
         # If there is no apt.dat an empty list is returned
         if not self.aptDat:
             return []
+        cacheStr = self.readCache("icao")
+        if cacheStr is not "":
+            return cacheStr.split(self.cacheDelimiterEntry)
         aptDatFile = open(self.aptDatPath)
         icaoCodes = []
         for line in aptDatFile:
@@ -123,6 +126,7 @@ class Scenery(xpstart.Base):
                 icaoCode = entries[4]
                 icaoCodes.append(icaoCode)
         aptDatFile.close()
+        self.writeCache("icao", self.makeString(icaoCodes))
         return icaoCodes
     
 
