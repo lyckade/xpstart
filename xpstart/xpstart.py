@@ -31,8 +31,43 @@ class Base():
         # classname:title:dataname:data
         #=======================================================================
         self.cacheFile = "data/cache.ini"
-    
         
+        #=======================================================================
+        # The delimiters are stored as parameter
+        # cacheDelimiterKey is to separate key and value from dictionaries
+        # cacheDelimiterEntry is to separate each entry
+        #=======================================================================
+        self.cacheDelimiterKey = ","
+        self.cacheDelimiterEntry = ";"
+    
+    
+    
+    def makeDict(self,s):
+        """
+        Makes a dictionary out of a string. The string should be made with the makeString() 
+        method. 
+        @param s: datastring from the cache
+        """
+        out = {}
+        entries = s.split(self.cacheDelimiterEntry)
+        for e in entries:
+            c = e.split(self.cacheDelimiterKey)
+            out[c[0]] = c[1]
+        return out
+        
+        
+    def makeString(self,a):
+        """
+        Makes a string of a iterable object. At the moment just dictionary is supported.
+        The method is used to generate the data which will be written into the cache.
+        @param a: dictionary which should be transformed to a string to write it into the cache
+        """
+        out = ""
+        if type(a) is dict:
+            for key,val in a.items():
+                out = "%s%s%s%s%s" % (out,key,self.cacheDelimiterKey,val,self.cacheDelimiterEntry)
+            return out[:-1]
+                
     def parseCacheLine(self,line):
         """
         Parses a Cache line and returns a tuple 
@@ -45,6 +80,9 @@ class Base():
     
     def readCache(self,dataname):
         """
+        Reads one entry out of the cache. To find the data the dataname is needed.
+        @param dataname: the name how to find the data
+        @type dataname: string
         """
         cf = open(self.cacheFile,"r")
         for l in cf:
@@ -53,6 +91,7 @@ class Base():
                 cf.close()
                 return cdata
         cf.close()
+ 
         return ""
     
     def writeCache(self,dataname,data):
@@ -65,7 +104,9 @@ class Base():
         """
         oldCache = []
         cf = open(self.cacheFile,"r")
-        datastring = "%s:%s:%s:%s" % (self.__class__.__name__,self.title,dataname,data)
+        #dataTuple = (self.__class__.__name__,self.title,dataname,data)
+        #datastring = "%s:%s:%s:%s" % (self.__class__.__name__,self.title,dataname,data)
+        datastring = ":".join((self.__class__.__name__,self.title,dataname,data))
         append = True
         for l in cf:
             cclassname, ctitle, cdataname, cdata = self.parseCacheLine(l)

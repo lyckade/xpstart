@@ -80,9 +80,13 @@ class Scenery(xpstart.Base):
         Counts all objects of the scenery and returns a dictionary with all
         the defined object types an the number how often they occur.
         """
+        cacheStr = self.readCache("counter")
+        if cacheStr is not "":
+            return self.makeDict(cacheStr)
         counter = {}
         exceptionDirs = ["opensceneryx"]
         exceptionFiles = ["placeholder"]
+        print "read: %s" % self.readCache("counter")
         for objType in self.objTypes:
             counter[objType] = 0
         for path,dirs,files in os.walk(self.path):
@@ -94,18 +98,11 @@ class Scenery(xpstart.Base):
                 fileElements = objFile.split(".")
                 if "." in objFile and fileElements[1] in self.objTypes and fileElements[0] not in exceptionFiles:
                     counter[fileElements[1]] = counter[fileElements[1]] + 1
-        self.writeCounter(counter)
+
+        self.writeCache("counter", self.makeString(counter))
         return counter
     
-    def writeCounter(self,counter):
-        data = ""
-        for key,val in counter.items():
-            data = "%s%s.%s;" % (data,key,val)
-        print data    
-        self.writeCache("counter", data)
-        
-    def readCounter(self):
-        print "read"
+
     
     #===========================================================================
     # Searches the icao codes in the apt.dat
