@@ -28,24 +28,57 @@ class Layer(xpstart.Base):
         self.loadDefaultRules()
         print self.defaultRules
         
-        #self.__ruleCommands = {}
         
     
     def addDefaultRule(self,cmd):
+        """
+        Adds one comand to the defaultRules. Every command is in the logik
+        "Entity->Rule->Value;"
+        """
         c = cmd.split("->")
         if not c[0] in self.defaultRules:
             self.defaultRules[c[0]] = {}
         if not c[1] in self.defaultRules[c[0]]:
             self.defaultRules[c[0]][c[1]] = {}
         self.defaultRules[c[0]][c[1]] = c[2]
+        
+    def checkEntities(self,entities):
+        """
+        Checks the entities with the defaultRules
+        @param entities: entityName:Value
+        @type entities: dict
+        @return: If the entities match into the defaultRules True else False
+        """
+        for entity,rules in self.defaultRules.items():
+            if entity not in entities:
+                return False
+            for rule,val in rules.items():
+                if rule == "min" and val < entities[entity]:
+                    return False
+                elif rule == "max" and val > entities[entity]:
+                    return False
+                elif rule == "is" and val is not entities[entity]:
+                    return False
+        return True
+                    
+            
+    
     
     def loadDefaultRules(self):
+        """
+        Loads the rules
+        These are defined over the layer_definitions.txt file. The rules are defined
+        with several commands, which are separated with ; inside that file. The rules
+        will be added to the DefaultRules
+        """
         data = self.readData("defaultRules")
         if data is not "":
             cmds = data.split(self.dataDelimiterEntry)
             for cmd in cmds:
                 if cmd is not "":
                     self.addDefaultRule(cmd)
+                    
+    
         
     
     
