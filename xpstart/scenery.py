@@ -27,7 +27,7 @@ class Scenery(xpstart.Base):
         # In one file there can be stored more data. The logic for storing is
         # classname:title:dataname:data
         #=======================================================================
-        self.cacheFile = "cache_sceneries.txt"
+        self.dataFile = "cache_sceneries.txt"
         
         #=======================================================================
         # The path to the scenery
@@ -80,13 +80,13 @@ class Scenery(xpstart.Base):
         Counts all objects of the scenery and returns a dictionary with all
         the defined object types an the number how often they occur.
         """
-        cacheStr = self.readCache("counter")
+        cacheStr = self.readData("counter")
         if cacheStr is not "":
             return self.makeDict(cacheStr)
         counter = {}
         exceptionDirs = ["opensceneryx"]
         exceptionFiles = ["placeholder"]
-        print "read: %s" % self.readCache("counter")
+        
         for objType in self.objTypes:
             counter[objType] = 0
         for path,dirs,files in os.walk(self.path):
@@ -99,7 +99,7 @@ class Scenery(xpstart.Base):
                 if "." in objFile and fileElements[1] in self.objTypes and fileElements[0] not in exceptionFiles:
                     counter[fileElements[1]] = counter[fileElements[1]] + 1
 
-        self.writeCache("counter", self.makeString(counter))
+        self.writeData("counter", self.makeString(counter))
         return counter
     
 
@@ -115,9 +115,9 @@ class Scenery(xpstart.Base):
         # If there is no apt.dat an empty list is returned
         if not self.aptDat:
             return []
-        cacheStr = self.readCache("icao")
+        cacheStr = self.readData("icao")
         if cacheStr is not "":
-            return cacheStr.split(self.cacheDelimiterEntry)
+            return cacheStr.split(self.dataDelimiterEntry)
         aptDatFile = open(self.aptDatPath)
         icaoCodes = []
         for line in aptDatFile:
@@ -126,7 +126,7 @@ class Scenery(xpstart.Base):
                 icaoCode = entries[4]
                 icaoCodes.append(icaoCode)
         aptDatFile.close()
-        self.writeCache("icao", self.makeString(icaoCodes))
+        self.writeData("icao", self.makeString(icaoCodes))
         return icaoCodes
     
 

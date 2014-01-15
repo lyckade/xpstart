@@ -30,15 +30,15 @@ class Base():
         # In one file there can be stored more data. The logic for storing is
         # classname:title:dataname:data
         #=======================================================================
-        self.cacheFile = "data/cache.ini"
+        self.dataFile = "data/cache.ini"
         
         #=======================================================================
         # The delimiters are stored as parameter
-        # cacheDelimiterKey is to separate key and value from dictionaries
-        # cacheDelimiterEntry is to separate each entry
+        # dataDelimiterKey is to separate key and value from dictionaries
+        # dataDelimiterEntry is to separate each entry
         #=======================================================================
-        self.cacheDelimiterKey = ","
-        self.cacheDelimiterEntry = ";"
+        self.dataDelimiterKey = ","
+        self.dataDelimiterEntry = ";"
     
     
     
@@ -49,11 +49,11 @@ class Base():
         @param s: datastring from the cache
         """
         out = {}
-        entries = s.split(self.cacheDelimiterEntry)
+        entries = s.split(self.dataDelimiterEntry)
         for e in entries:
             if e == "":
                 continue
-            c = e.split(self.cacheDelimiterKey)
+            c = e.split(self.dataDelimiterKey)
             out[c[0]] = c[1]
         return out
         
@@ -67,12 +67,12 @@ class Base():
         out = ""
         if type(a) is dict:
             for key,val in a.items():
-                out = "%s%s%s%s%s" % (out,key,self.cacheDelimiterKey,val,self.cacheDelimiterEntry)
+                out = "%s%s%s%s%s" % (out,key,self.dataDelimiterKey,val,self.dataDelimiterEntry)
             return out
         elif type(a) is list:
-            return "%s%s" % (self.cacheDelimiterEntry.join(a),self.cacheDelimiterEntry)
+            return "%s%s" % (self.dataDelimiterEntry.join(a),self.dataDelimiterEntry)
                 
-    def parseCacheLine(self,line):
+    def parseFileLine(self,line):
         """
         Parses a Cache line and returns a tuple 
         (classname,title,dataname,data)
@@ -82,23 +82,27 @@ class Base():
         c = line.strip().split(":")
         return (c[0],c[1],c[2],c[3])
     
-    def readCache(self,dataname):
+    def readData(self,dataname,dataFile = ""):
         """
         Reads one entry out of the cache. To find the data the dataname is needed.
         @param dataname: the name how to find the data
         @type dataname: string
         """
-        cf = open(self.cacheFile,"r")
-        for l in cf:
-            cclassname, ctitle, cdataname, cdata = self.parseCacheLine(l)
-            if  cclassname == self.__class__.__name__ and ctitle == self.title and cdataname == dataname:
-                cf.close()
-                return cdata
-        cf.close()
- 
-        return ""
+        if dataFile == "":
+            dataFile = self.dataFile
+        try:
+            cf = open(dataFile,"r")
+            for l in cf:
+                cclassname, ctitle, cdataname, cdata = self.parseFileLine(l)
+                if  cclassname == self.__class__.__name__ and ctitle == self.title and cdataname == dataname:
+                    cf.close()
+                    return cdata
+            cf.close()
+            return ""
+        except:
+            return ""
     
-    def writeCache(self,dataname,data):
+    def writeData(self,dataname,data,dataFile = ""):
         """
         Writes the given data into the cache file
         @param dataname: the name how the data can be found again
@@ -106,14 +110,18 @@ class Base():
         @type dataname: string
         @type data: string
         """
+        if dataFile == "":
+            dataFile = self.dataFile
         oldCache = []
-        cf = open(self.cacheFile,"r")
+        # Touch the file that there is no error, if there is no file
+        open(dataFile,"a").close()
+        cf = open(dataFile,"r")
         #dataTuple = (self.__class__.__name__,self.title,dataname,data)
         #datastring = "%s:%s:%s:%s" % (self.__class__.__name__,self.title,dataname,data)
         datastring = ":".join((self.__class__.__name__,self.title,dataname,data))
         append = True
         for l in cf:
-            cclassname, ctitle, cdataname, cdata = self.parseCacheLine(l)
+            cclassname, ctitle, cdataname, cdata = self.parseFileLine(l)
             if  cclassname == self.__class__.__name__ and ctitle == self.title and cdataname == dataname:
                 l = datastring
                 append = False
@@ -121,7 +129,7 @@ class Base():
         if append:
             oldCache.append(datastring)
         cf.close()
-        cf = open(self.cacheFile,"w")
+        cf = open(dataFile,"w")
         for l in oldCache:
             if len(l)>5:
                 cf.write("%s\n" % (l.strip()))
