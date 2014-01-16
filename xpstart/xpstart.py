@@ -41,6 +41,18 @@ class Base():
         self.dataDelimiterEntry = ";"
     
     
+    def getTxtProperty(self,property,path):
+        """
+        Method to get the value of a property whichis defined in a txt file
+        """
+        f = open(path,"r")
+        for l in f:
+            c = l.split()
+            if c[0].strip() == property:
+                f.close()
+                return " ".join(c[1:])
+        f.close()
+        return ""
     
     def makeDict(self,s):
         """

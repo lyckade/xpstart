@@ -21,6 +21,7 @@ class Scenery(xpstart.Base):
         self.__pathAptDat = "/Earth nav data/apt.dat"
         
         
+        
         #=======================================================================
         # The file were the data of the scenerie is cached
         # That parameter is overwritten
@@ -59,6 +60,20 @@ class Scenery(xpstart.Base):
         # If there is a library.txt file
         #=======================================================================
         self.libraryTxt = os.path.exists("%s/library.txt" % (self.path))
+        
+        #=======================================================================
+        # The scenery.txt is a place where information about layergroup can
+        # be defined. This gives the developer the possibility to define when
+        # his scenery should be loaded by the system.
+        #=======================================================================
+        self.sceneryTxt = "scenery.txt"
+        self.pathSceneryTxt = "%s/%s" % (self.path,self.sceneryTxt)
+        self.sceneryTxt = os.path.exists(self.pathSceneryTxt)
+
+        if self.sceneryTxt:
+            self.authLayergroup = self.getTxtProperty("LAYERGROUP", self.pathSceneryTxt)
+        else:
+            self.authLayergroup = ""
         
         
         #=======================================================================

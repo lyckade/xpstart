@@ -49,15 +49,17 @@ class Layer(xpstart.Base):
         @type entities: dict
         @return: If the entities match into the defaultRules True else False
         """
+        if len(self.defaultRules) == 0:
+            return False
         for entity,rules in self.defaultRules.items():
             if entity not in entities:
                 return False
             for rule,val in rules.items():
-                if rule == "min" and val < entities[entity]:
+                if rule == "min" and int(val) > int(entities[entity]):
                     return False
-                elif rule == "max" and val > entities[entity]:
+                elif rule == "max" and int(val) < int(entities[entity]):
                     return False
-                elif rule == "is" and val is not entities[entity]:
+                elif rule == "is" and int(val) != int(entities[entity]):
                     return False
         return True
                     
@@ -103,6 +105,7 @@ class Layergroup(xpstart.Base):
         
         #=======================================================================
         # Dict to store the layers object and other data
+        # The object is always found at self.layers[title]['object']
         #=======================================================================
         self.layers = {}
         
@@ -124,6 +127,7 @@ class Layergroup(xpstart.Base):
         # objects
         #=======================================================================
         self.sceneries = self.loadXpSceneries()
+        print self.layers
         
         
         
@@ -137,12 +141,14 @@ class Layergroup(xpstart.Base):
                 continue
             self.layers[title] = {}
             self.layers[title]['object'] = Layer(title)
+            # Make instance here for easy append later
+            self.layers[title]['sceneries'] = {}
         print layersTitles[:-1]
         
         
     def loadXpSceneries(self):
         """
-        Loads all sceneries and returns a list of scenery objects
+        Loads all sceneries and orders it in the self.layers[title]['sceneries'] dict
         """
         sceneryPath = "%s/%s" % (self.xpPath,self.sceneryFolder)
         sceneries = []
@@ -155,6 +161,9 @@ class Layergroup(xpstart.Base):
                 sceneryObj = scenery.Scenery(abspath)
                 sceneries.append(sceneryObj)
                 print self.makeSceneryEntities(sceneryObj)
+                layerTitle = self.searchDefaultLayer(sceneryObj)
+                if layerTitle in self.layers:
+                    self.layers[layerTitle]['sceneries'][sceneryObj.title] = sceneryObj
         return sceneries
     
     def makeSceneryEntities(self,scenery):
@@ -174,5 +183,16 @@ class Layergroup(xpstart.Base):
             entities['aptdat'] = 0
         return entities
     
-    def searchDefaultLayer(self):
-        return "layertitle"
+    def searchDefaultLayer(self,sceneryObj):
+        """
+        Walks through the layers and make a check, if it is the defaultLayer to 
+        the scenery object.
+        Returns the title of the default layer
+        """
+        if len(self.layers) == 0:
+            self.loadLayers()
+        entities = self.makeSceneryEntities(sceneryObj)
+        for layerTitle,layerDict in self.layers.items():
+            if layerDict['object'].checkEntities(entities):
+                return layerTitle
+        return ""
