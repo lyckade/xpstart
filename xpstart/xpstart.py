@@ -17,7 +17,8 @@ class Base():
                            "lin",
                            "obj",
                            "pol",
-                           "str"]
+                           "str",
+                           "ter"]
         
         #=======================================================================
         # A title will be filled in when there is an instance

@@ -1,9 +1,10 @@
 Layergroup:Default:layers:library;ground;texture;autogen;default;exclusion;custom;
 Layer:library:defaultRules:obj->min->10;for->min->1;aptdat->is->0;
 Layer:custom:defaultRules:aptdat->is->1;icaos->min->1;
+Layer:default:defaultRules:title->is->Global Airports;
+Layer:texture:defaultRules:obj->max->0;polter->min->200;
 Layer:ground:dataname:Test
 Layer:texture:dataname:Test
 Layer:autogen:dataname:Test
-Layer:default:dataname:Test
 Layer:exclusion:dataname:Test
 Layer:custom:dataname:Test

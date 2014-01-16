@@ -59,7 +59,7 @@ class Layer(xpstart.Base):
                     return False
                 elif rule == "max" and int(val) < int(entities[entity]):
                     return False
-                elif rule == "is" and int(val) != int(entities[entity]):
+                elif rule == "is" and str(val) != str(entities[entity]):
                     return False
         return True
                     
@@ -174,8 +174,11 @@ class Layergroup(xpstart.Base):
         """
         #entities = {}
         entities = scenery.counterObjects
+        # polter is the sum of pol and ter it is needed to indentify photo sceneries
+        entities['polter'] = scenery.counterObjects['pol'] + scenery.counterObjects['ter']
         entities['icaos'] = len(scenery.icaoCodes)
         entities['title'] = scenery.title
+        
         
         if scenery.aptDat:
             entities['aptdat'] = 1
