@@ -102,22 +102,30 @@ class Layergroup(xpstart.Base):
         self.title = "Default"
         
         #=======================================================================
-        # List to store the layers inside
-        # Every entry will be a Layer object
+        # Dict to store the layers object and other data
         #=======================================================================
-        self.layers = []
+        self.layers = {}
         
         #=======================================================================
         # File were all the definitions to the layers are stored 
         #=======================================================================
         self.layerDefFile = "xpstart/layer_definitions.txt"
         
+        #=======================================================================
+        # All the Layers needs to be loaded
+        #=======================================================================
+        self.loadLayers()
+        
         # The name of the sceneryFolder !Don't change!
         self.sceneryFolder = "Custom Scenery"
-        # All sceneries as an object
+        
+        #=======================================================================
+        # All active sceneries of the XP installation are loaded as scenery
+        # objects
+        #=======================================================================
         self.sceneries = self.loadXpSceneries()
         
-        self.loadLayers()
+        
         
         
     def loadLayers(self):
@@ -127,7 +135,8 @@ class Layergroup(xpstart.Base):
         for title in layersTitles:
             if title == "":
                 continue
-            self.layers.append(Layer(title))
+            self.layers[title] = {}
+            self.layers[title]['object'] = Layer(title)
         print layersTitles[:-1]
         
         
@@ -143,5 +152,27 @@ class Layergroup(xpstart.Base):
             abspath = "%s/%s" % (sceneryPath,entry)
             # A scenery has to be a directory
             if os.path.isdir(abspath):
-                sceneries.append(scenery.Scenery(abspath))
+                sceneryObj = scenery.Scenery(abspath)
+                sceneries.append(sceneryObj)
+                print self.makeSceneryEntities(sceneryObj)
         return sceneries
+    
+    def makeSceneryEntities(self,scenery):
+        """
+        Makes one dictionary of a scenery object. This dict is used to check
+        for layer default rules
+        @type scenery: Instance of Scenery Object
+        """
+        #entities = {}
+        entities = scenery.counterObjects
+        entities['icaos'] = len(scenery.icaoCodes)
+        entities['title'] = scenery.title
+        
+        if scenery.aptDat:
+            entities['aptdat'] = 1
+        else:
+            entities['aptdat'] = 0
+        return entities
+    
+    def searchDefaultLayer(self):
+        return "layertitle"

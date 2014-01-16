@@ -68,6 +68,7 @@ class Scenery(xpstart.Base):
         self.counterObjects = self.countObjects()
         
         
+        
         #=======================================================================
         # Icao codes of the scenery if there is an apt.dat
         # One scenery can have many icao codes. The parameter is type list
@@ -89,6 +90,8 @@ class Scenery(xpstart.Base):
         
         for objType in self.objTypes:
             counter[objType] = 0
+        # sum is for the sum() of all objects
+        counter['sum'] = 0
         for path,dirs,files in os.walk(self.path):
             if os.path.basename(path) in exceptionDirs:
                 continue
@@ -98,7 +101,8 @@ class Scenery(xpstart.Base):
                 fileElements = objFile.split(".")
                 if "." in objFile and fileElements[1] in self.objTypes and fileElements[0] not in exceptionFiles:
                     counter[fileElements[1]] = counter[fileElements[1]] + 1
-
+                    counter['sum'] = counter['sum'] + 1
+        
         self.writeData("counter", self.makeString(counter))
         return counter
     
@@ -117,7 +121,7 @@ class Scenery(xpstart.Base):
             return []
         cacheStr = self.readData("icao")
         if cacheStr is not "":
-            return cacheStr.split(self.dataDelimiterEntry)
+            return cacheStr.split(self.dataDelimiterEntry)[:-1]
         aptDatFile = open(self.aptDatPath)
         icaoCodes = []
         for line in aptDatFile:
