@@ -97,42 +97,39 @@ class Layergroup(xpstart.Base):
             xpPath = xpPath[:-1]
         self.xpPath = xpPath
         
-        #=======================================================================
-        # Title is important for the read and write methods and specify the
-        # instance. If not changed it will be the Default instance
-        #=======================================================================
+
         self.title = "Default"
-        
-        #=======================================================================
-        # Dict to store the layers object and other data
-        # The object is always found at self.layers[title]['object']
-        #=======================================================================
+        """
+        Title is important for the read and write methods and specify the
+        instance. If not changed it will be the Default instance
+        """
+
         self.layers = {}
-        
-        #=======================================================================
-        # File were all the definitions to the layers are stored 
-        #=======================================================================
+        """
+        Dict to store the layers object and other data
+        The object is always found at self.layers[title]['object']
+        """
+
         self.layerDefFile = "xpstart/layer_definitions.txt"
+        """File were all the definitions to the layers are stored """
         
-        #=======================================================================
-        # All the Layers needs to be loaded
-        #=======================================================================
         self.loadLayers()
+        """All the Layers needs to be loaded"""
         
-        # The name of the sceneryFolder !Don't change!
-        self.sceneryFolder = "Custom Scenery"
         
-        #=======================================================================
-        # All active sceneries of the XP installation are loaded as scenery
-        # objects
-        #=======================================================================
+        self.sceneryFolder = "Custom Scenery" #: The name of the sceneryFolder !Don't change!
+        
         self.sceneries = self.loadXpSceneries()
+        """All active sceneries of the XP installation are loaded as scenery objects"""
         print self.layers
         
         
         
         
     def loadLayers(self):
+        """Loads the defined layers out of the dataFile and adds an Layer object
+        to the self.layers list. 
+        """
         #self.writeData("layers","libraries;ground;texture;", self.layerDefFile)
         layersData = self.readData("layers", self.layerDefFile)
         layersTitles = layersData.split(self.dataDelimiterEntry)
@@ -143,7 +140,6 @@ class Layergroup(xpstart.Base):
             self.layers[title]['object'] = Layer(title)
             # Make instance here for easy append later
             self.layers[title]['sceneries'] = {}
-        print layersTitles[:-1]
         
         
     def loadXpSceneries(self):
