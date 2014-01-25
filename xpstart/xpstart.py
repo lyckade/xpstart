@@ -44,7 +44,7 @@ class Base():
     
     def getTxtProperty(self,property,path):
         """
-        Method to get the value of a property whichis defined in a txt file
+        Method to get the value of a property which is defined in a txt file
         """
         f = open(path,"r")
         for l in f:
@@ -88,7 +88,7 @@ class Base():
     def parseFileLine(self,line):
         """
         Parses a Cache line and returns a tuple 
-        (classname,title,dataname,data)
+        (classname,title,dataname,data)    
         @param line: one line of the cache file
         @type line: string 
         """

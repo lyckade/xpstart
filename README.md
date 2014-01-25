@@ -5,7 +5,7 @@ X-Plane 10 don't load the sceneries in alphabetic order. Cause of this the scene
 
 Specially with the new default airports it is necessery to have a programm which orders the sceneries on a way which makes sence.
 
-For this xpstart reorders the sceneries over the scenery_packs.ini file.
+For this xpstart reorders the sceneries over the scenery_packs.ini file. Documentation can be found at [http://developer.x-plane.com/2012/09/scenery-packs-the-new-rules/](http://developer.x-plane.com/2012/09/scenery-packs-the-new-rules/)
 
 ## Layers
 
