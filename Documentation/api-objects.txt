@@ -2,6 +2,8 @@ xpstart.layergroup	xpstart.layergroup-module.html
 xpstart.layergroup.__package__	xpstart.layergroup-module.html#__package__
 xpstart.scenery	xpstart.scenery-module.html
 xpstart.scenery.__package__	xpstart.scenery-module.html#__package__
+xpstart.scenerypacks	xpstart.scenerypacks-module.html
+xpstart.scenerypacks.__package__	xpstart.scenerypacks-module.html#__package__
 xpstart.xpstart	xpstart.xpstart-module.html
 xpstart.xpstart.__package__	xpstart.xpstart-module.html#__package__
 xpstart.layergroup.Layer	xpstart.layergroup.Layer-class.html
@@ -52,6 +54,13 @@ xpstart.xpstart.Base.parseFileLine	xpstart.xpstart.Base-class.html#parseFileLine
 xpstart.scenery.Scenery.counterObjects	xpstart.scenery.Scenery-class.html#counterObjects
 xpstart.scenery.Scenery.__pathAptDat	xpstart.scenery.Scenery-class.html#__pathAptDat
 xpstart.scenery.Scenery.__init__	xpstart.scenery.Scenery-class.html#__init__
+xpstart.scenerypacks.Scenerypacks	xpstart.scenerypacks.Scenerypacks-class.html
+xpstart.scenerypacks.Scenerypacks.__iniCmds	xpstart.scenerypacks.Scenerypacks-class.html#__iniCmds
+xpstart.scenerypacks.Scenerypacks.xpPath	xpstart.scenerypacks.Scenerypacks-class.html#xpPath
+xpstart.scenerypacks.Scenerypacks.__sceneryFolder	xpstart.scenerypacks.Scenerypacks-class.html#__sceneryFolder
+xpstart.scenerypacks.Scenerypacks.__iniFile	xpstart.scenerypacks.Scenerypacks-class.html#__iniFile
+xpstart.scenerypacks.Scenerypacks.__iniHeader	xpstart.scenerypacks.Scenerypacks-class.html#__iniHeader
+xpstart.scenerypacks.Scenerypacks.__init__	xpstart.scenerypacks.Scenerypacks-class.html#__init__
 xpstart.xpstart.Base	xpstart.xpstart.Base-class.html
 xpstart.xpstart.Base.getTxtProperty	xpstart.xpstart.Base-class.html#getTxtProperty
 xpstart.xpstart.Base.makeDict	xpstart.xpstart.Base-class.html#makeDict

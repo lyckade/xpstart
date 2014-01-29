@@ -20,9 +20,6 @@ class Scenery(xpstart.Base):
         """Path to the apt.dat File begining at scenery folder"""
         
         
-        #=======================================================================
-        # 
-        #=======================================================================
         self.dataFile = "cache_sceneries.txt"
         """The file were the data of the scenerie is cached
         That parameter is overwritten
@@ -117,6 +114,7 @@ class Scenery(xpstart.Base):
             counter = self.countObjects()
             self.writeData("counter", self.makeString(counter))
             return counter
+        
     def searchIcaoCodes(self):
         """
         Returns a list with all the ICAO codes find in the apt.dat file of the

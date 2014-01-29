@@ -26,7 +26,7 @@ class Layer(xpstart.Base):
         self.defaultRules = {}
         
         self.loadDefaultRules()
-        print self.defaultRules
+
         
         
     
@@ -61,6 +61,14 @@ class Layer(xpstart.Base):
                     return False
                 elif rule == "is" and str(val) != str(entities[entity]):
                     return False
+                elif rule == "in":
+                    if "|" in str(val):
+                        l = str(val).split("|")
+                    else:
+                        l = [str(val)]
+                    if str(entities[entity]) not in l:
+                        return False
+ 
         return True
                     
             
@@ -121,9 +129,6 @@ class Layergroup(xpstart.Base):
         
         self.sceneries = self.loadXpSceneries()
         """All active sceneries of the XP installation are loaded as scenery objects"""
-        print self.layers
-        
-        
         
         
     def loadLayers(self):
@@ -156,7 +161,6 @@ class Layergroup(xpstart.Base):
             if os.path.isdir(abspath):
                 sceneryObj = scenery.Scenery(abspath)
                 sceneries.append(sceneryObj)
-                print self.makeSceneryEntities(sceneryObj)
                 layerTitle = self.searchDefaultLayer(sceneryObj)
                 if layerTitle in self.layers:
                     self.layers[layerTitle]['sceneries'][sceneryObj.title] = sceneryObj
