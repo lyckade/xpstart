@@ -15,20 +15,19 @@ class Scenery(xpstart.Base):
         
         xpstart.Base.__init__(self)
         
-        #=======================================================================
-        # Path to the apt.dat File begining at scenery folder
-        #=======================================================================
+
         self.__pathAptDat = "/Earth nav data/apt.dat"
-        
+        """Path to the apt.dat File begining at scenery folder"""
         
         
         #=======================================================================
-        # The file were the data of the scenerie is cached
-        # That parameter is overwritten
-        # In one file there can be stored more data. The logic for storing is
-        # classname:title:dataname:data
+        # 
         #=======================================================================
         self.dataFile = "cache_sceneries.txt"
+        """The file were the data of the scenerie is cached
+        That parameter is overwritten
+        In one file there can be stored more data. The logic for storing is
+        classname:title:dataname:data"""
         
         #=======================================================================
         # The path to the scenery
@@ -38,35 +37,27 @@ class Scenery(xpstart.Base):
             path = path[:-1]
         self.path = path
         
-        #=======================================================================
-        # The title of a scenery is defined by the folder name
-        #=======================================================================
+
         self.title = os.path.basename(self.path)
-        
-        #=======================================================================
-        # The path to the apt.dat file
-        # Were the apt.dat file is, when a scenery has one
-        #=======================================================================
+        """The title of a scenery is defined by the folder name"""
+
         self.aptDatPath = "%s/%s" % (self.path,self.__pathAptDat)
+        """The path to the apt.dat file
+        Were the apt.dat file is, when a scenery has one"""
         
-        
-        #=======================================================================
-        # Is true, when there is a apt.dat file
-        # If apt.dat data is requested that parameter is asked
-        #=======================================================================
         self.aptDat = os.path.exists(self.aptDatPath)
+        """Is true, when there is a apt.dat file
+        If apt.dat data is requested that parameter is asked"""
         
-        #=======================================================================
-        # If there is a library.txt file
-        #=======================================================================
+
         self.libraryTxt = os.path.exists("%s/library.txt" % (self.path))
-        
-        #=======================================================================
-        # The scenery.txt is a place where information about layergroup can
-        # be defined. This gives the developer the possibility to define when
-        # his scenery should be loaded by the system.
-        #=======================================================================
+        """ If there is a library.txt file"""
+
         self.sceneryTxt = "scenery.txt"
+        """The scenery.txt is a place where information about layergroup can
+        be defined. This gives the developer the possibility to define when
+        his scenery should be loaded by the system.
+        """
         self.pathSceneryTxt = "%s/%s" % (self.path,self.sceneryTxt)
         self.sceneryTxt = os.path.exists(self.pathSceneryTxt)
 
@@ -75,20 +66,15 @@ class Scenery(xpstart.Base):
         else:
             self.authLayergroup = ""
         
+        self.counterObjects = self.getObjectCount()
+        """Counts the objects and stores them into that parameter
+        The parameter is a dictionary like the __objTypes"""
         
-        #=======================================================================
-        # Counts the objects and stores them into that parameter
-        # The parameter is a dictionary like the __objTypes
-        #=======================================================================
-        self.counterObjects = self.countObjects()
-        
-        
-        
-        #=======================================================================
-        # Icao codes of the scenery if there is an apt.dat
-        # One scenery can have many icao codes. The parameter is type list
-        #=======================================================================
+
         self.icaoCodes = self.searchIcaoCodes()
+        """Icao codes of the scenery if there is an apt.dat
+        One scenery can have many icao codes. The parameter is type list
+        """
         
         
     def countObjects(self):
@@ -96,9 +82,7 @@ class Scenery(xpstart.Base):
         Counts all objects of the scenery and returns a dictionary with all
         the defined object types an the number how often they occur.
         """
-        cacheStr = self.readData("counter")
-        if cacheStr is not "":
-            return self.makeDict(cacheStr)
+        
         counter = {}
         exceptionDirs = ["opensceneryx"]
         exceptionFiles = ["placeholder"]
@@ -117,15 +101,22 @@ class Scenery(xpstart.Base):
                 if "." in objFile and fileElements[1] in self.objTypes and fileElements[0] not in exceptionFiles:
                     counter[fileElements[1]] = counter[fileElements[1]] + 1
                     counter['sum'] = counter['sum'] + 1
-        
-        self.writeData("counter", self.makeString(counter))
         return counter
     
 
-    
-    #===========================================================================
-    # Searches the icao codes in the apt.dat
-    #===========================================================================
+    def getObjectCount(self):
+        """
+        Method to get the object count. For performance the cache is been used.
+        If there is no entry in the file the count method is used and an entry
+        is written into the file.
+        """
+        cacheStr = self.readData("counter")
+        if cacheStr is not "":
+            return self.makeDict(cacheStr)
+        else:
+            counter = self.countObjects()
+            self.writeData("counter", self.makeString(counter))
+            return counter
     def searchIcaoCodes(self):
         """
         Returns a list with all the ICAO codes find in the apt.dat file of the
