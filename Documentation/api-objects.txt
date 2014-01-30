@@ -58,6 +58,8 @@ xpstart.scenerypacks.Scenerypacks	xpstart.scenerypacks.Scenerypacks-class.html
 xpstart.scenerypacks.Scenerypacks.__iniCmds	xpstart.scenerypacks.Scenerypacks-class.html#__iniCmds
 xpstart.scenerypacks.Scenerypacks.xpPath	xpstart.scenerypacks.Scenerypacks-class.html#xpPath
 xpstart.scenerypacks.Scenerypacks.__sceneryFolder	xpstart.scenerypacks.Scenerypacks-class.html#__sceneryFolder
+xpstart.scenerypacks.Scenerypacks.packs	xpstart.scenerypacks.Scenerypacks-class.html#packs
+xpstart.scenerypacks.Scenerypacks.parseLine	xpstart.scenerypacks.Scenerypacks-class.html#parseLine
 xpstart.scenerypacks.Scenerypacks.__iniFile	xpstart.scenerypacks.Scenerypacks-class.html#__iniFile
 xpstart.scenerypacks.Scenerypacks.__iniHeader	xpstart.scenerypacks.Scenerypacks-class.html#__iniHeader
 xpstart.scenerypacks.Scenerypacks.__init__	xpstart.scenerypacks.Scenerypacks-class.html#__init__
