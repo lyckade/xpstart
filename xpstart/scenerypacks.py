@@ -49,6 +49,7 @@ class Scenerypacks():
             # All installed sceneries are used for this
             self.order = self.getInstalledSceneries()
             self.writeIniFile()
+        self.readIniFile()
         
         
         
@@ -77,6 +78,10 @@ class Scenerypacks():
         c = line.split(" ")
         cmd = c[0]
         val = " ".join(c[1:])
+        if val.startswith(self.__sceneryFolder) and "/" in val:
+            el = val.split("/")
+            val = el[1]
+            
         return (cmd,val)
     
     def readIniFile(self,path=""):
