@@ -117,6 +117,11 @@ class Layergroup(xpstart.Base):
         Dict to store the layers object and other data
         The object is always found at self.layers[title]['object']
         """
+        
+        self.order = []
+        """
+        List to get the Layers in the right order
+        """
 
         self.layerDefFile = "xpstart/layer_definitions.txt"
         """File were all the definitions to the layers are stored """
@@ -138,9 +143,11 @@ class Layergroup(xpstart.Base):
         #self.writeData("layers","libraries;ground;texture;", self.layerDefFile)
         layersData = self.readData("layers", self.layerDefFile)
         layersTitles = layersData.split(self.dataDelimiterEntry)
+        self.order = []
         for title in layersTitles:
             if title == "":
                 continue
+            self.order.append(title)
             self.layers[title] = {}
             self.layers[title]['object'] = Layer(title)
             # Make instance here for easy append later
