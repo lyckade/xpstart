@@ -2,6 +2,8 @@ import os.path
 
 class Scenerypacks():
     """Reads and writes the scenery_packs.ini file
+    To write a new order the parameter self.order has to be set. This will
+    override the given order from the ini file
     """
     
     def __init__(self,xpPath):
