@@ -151,7 +151,7 @@ class Layergroup(xpstart.Base):
             self.layers[title] = {}
             self.layers[title]['object'] = Layer(title)
             # Make instance here for easy append later
-            self.layers[title]['sceneries'] = {}
+            self.layers[title]['sceneries'] = []
         
         
     def loadXpSceneries(self):
@@ -170,7 +170,7 @@ class Layergroup(xpstart.Base):
                 sceneries.append(sceneryObj)
                 layerTitle = self.searchDefaultLayer(sceneryObj)
                 if layerTitle in self.layers:
-                    self.layers[layerTitle]['sceneries'][sceneryObj.title] = sceneryObj
+                    self.layers[layerTitle]['sceneries'].append(sceneryObj.title)
         return sceneries
     
     def makeSceneryEntities(self,scenery):
@@ -185,6 +185,10 @@ class Layergroup(xpstart.Base):
         entities['polter'] = scenery.counterObjects['pol'] + scenery.counterObjects['ter']
         entities['icaos'] = len(scenery.icaoCodes)
         entities['title'] = scenery.title
+        if scenery.libraryTxt:
+            entities['library'] = 1
+        else:
+            entities['library'] = 0
         
         
         if scenery.aptDat:

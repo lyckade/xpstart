@@ -20,7 +20,7 @@ class Scenery(xpstart.Base):
         """Path to the apt.dat File begining at scenery folder"""
         
         
-        self.dataFile = "cache_sceneries.txt"
+        self.dataFile = "xpstart/cache_sceneries.txt"
         """The file were the data of the scenerie is cached
         That parameter is overwritten
         In one file there can be stored more data. The logic for storing is

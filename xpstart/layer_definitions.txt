@@ -1,6 +1,6 @@
 #Layergroup:Default:layers:library;ground;texture;autogen;default;exclusion;custom;
 Layergroup:Default:layers:custom;exclusion;default;autogen;texture;ground;library;
-Layer:library:defaultRules:obj->min->10;for->min->1;aptdat->is->0;
+Layer:library:defaultRules:obj->min->10;for->min->1;aptdat->is->0;library->is->1;
 Layer:custom:defaultRules:aptdat->is->1;icaos->min->1;
 Layer:default:defaultRules:title->in->Global Airports|Aerosoft - EBBR Brussels|Aerosoft - EDDF Frankfurt|Aerosoft - EDDK Cologne|Aerosoft - EDDM Munich|Aerosoft - EDDS Stuttgart|Aerosoft - EDDT Berlin Tegel|Aerosoft - EDDV Hannover|Aerosoft - EGBB Birmingham|Aerosoft - EGKK London-Gatwick|Aerosoft - EGLL Heathrow|Aerosoft - EGPF Glasgow|Aerosoft - EGSS London-Stansted|Aerosoft - EIDW Dublin|Aerosoft - LEBL Barcelona|Aerosoft - LEMD Madrid|Aerosoft - LFMN Nice Cote d Azur X|Aerosoft - LFPG Paris CDG|Aerosoft - LFPO Paris Orly|Aerosoft - LPFR Faro|Aerosoft - LSGG Genf;
 Layer:texture:defaultRules:obj->max->0;polter->min->200;
