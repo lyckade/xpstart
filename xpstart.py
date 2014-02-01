@@ -8,7 +8,7 @@ for lname in lg.order:
     l = lg.layers[lname]
     if len(l['sceneries'])== 0:
         continue
-    for s in l['sceneries']:
+    for s in sorted(l['sceneries']):
         sceneries.append(s)
         print s
 import xpstart.scenerypacks

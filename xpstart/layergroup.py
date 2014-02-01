@@ -159,7 +159,7 @@ class Layergroup(xpstart.Base):
         Loads all sceneries and orders it in the self.layers[title]['sceneries'] dict
         """
         sceneryPath = "%s/%s" % (self.xpPath,self.sceneryFolder)
-        sceneries = []
+        sceneries = {}
         
         for entry in os.listdir(sceneryPath):
             # Path to the entry
@@ -167,8 +167,11 @@ class Layergroup(xpstart.Base):
             # A scenery has to be a directory
             if os.path.isdir(abspath):
                 sceneryObj = scenery.Scenery(abspath)
-                sceneries.append(sceneryObj)
-                layerTitle = self.searchDefaultLayer(sceneryObj)
+                sceneries[sceneryObj.title] = sceneryObj
+                if sceneryObj.authLayergroup in self.layers:
+                    layerTitle = sceneryObj.authLayergroup
+                else:
+                    layerTitle = self.searchDefaultLayer(sceneryObj)
                 if layerTitle in self.layers:
                     self.layers[layerTitle]['sceneries'].append(sceneryObj.title)
         return sceneries

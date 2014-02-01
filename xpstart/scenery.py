@@ -50,12 +50,12 @@ class Scenery(xpstart.Base):
         self.libraryTxt = os.path.exists("%s/library.txt" % (self.path))
         """ If there is a library.txt file"""
 
-        self.sceneryTxt = "scenery.txt"
+        self.sceneryTxtFile = "scenery.txt"
         """The scenery.txt is a place where information about layergroup can
         be defined. This gives the developer the possibility to define when
         his scenery should be loaded by the system.
         """
-        self.pathSceneryTxt = "%s/%s" % (self.path,self.sceneryTxt)
+        self.pathSceneryTxt = "%s/%s" % (self.path,self.sceneryTxtFile)
         self.sceneryTxt = os.path.exists(self.pathSceneryTxt)
 
         if self.sceneryTxt:
@@ -114,6 +114,15 @@ class Scenery(xpstart.Base):
             counter = self.countObjects()
             self.writeData("counter", self.makeString(counter))
             return counter
+        
+    def loadSceneryTxt(self):
+        """Loads the scenery.txt file and sets the intern variables"""
+        if self.sceneryTxt:
+            f = open(self.pathSceneryTxt,"r")
+            for l in f:
+                if l.startswith("LAYERGROUP"):
+                    print "H"
+            f.close()
         
     def searchIcaoCodes(self):
         """
