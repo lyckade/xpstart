@@ -28,11 +28,12 @@ xpstart.layergroup.Layergroup.loadXpSceneries	xpstart.layergroup.Layergroup-clas
 xpstart.xpstart.Base.getTxtProperty	xpstart.xpstart.Base-class.html#getTxtProperty
 xpstart.layergroup.Layergroup.makeSceneryEntities	xpstart.layergroup.Layergroup-class.html#makeSceneryEntities
 xpstart.xpstart.Base.readData	xpstart.xpstart.Base-class.html#readData
-xpstart.layergroup.Layergroup.layerDefFile	xpstart.layergroup.Layergroup-class.html#layerDefFile
 xpstart.layergroup.Layergroup.sceneryFolder	xpstart.layergroup.Layergroup-class.html#sceneryFolder
+xpstart.layergroup.Layergroup.layerDefFile	xpstart.layergroup.Layergroup-class.html#layerDefFile
 xpstart.xpstart.Base.parseFileLine	xpstart.xpstart.Base-class.html#parseFileLine
 xpstart.layergroup.Layergroup.sceneries	xpstart.layergroup.Layergroup-class.html#sceneries
 xpstart.layergroup.Layergroup.searchDefaultLayer	xpstart.layergroup.Layergroup-class.html#searchDefaultLayer
+xpstart.layergroup.Layergroup.order	xpstart.layergroup.Layergroup-class.html#order
 xpstart.layergroup.Layergroup.__init__	xpstart.layergroup.Layergroup-class.html#__init__
 xpstart.scenery.Scenery	xpstart.scenery.Scenery-class.html
 xpstart.scenery.Scenery.getObjectCount	xpstart.scenery.Scenery-class.html#getObjectCount
@@ -40,6 +41,7 @@ xpstart.scenery.Scenery.libraryTxt	xpstart.scenery.Scenery-class.html#libraryTxt
 xpstart.scenery.Scenery.dataFile	xpstart.scenery.Scenery-class.html#dataFile
 xpstart.scenery.Scenery.countObjects	xpstart.scenery.Scenery-class.html#countObjects
 xpstart.xpstart.Base.writeData	xpstart.xpstart.Base-class.html#writeData
+xpstart.scenery.Scenery.sceneryTxtFile	xpstart.scenery.Scenery-class.html#sceneryTxtFile
 xpstart.xpstart.Base.makeString	xpstart.xpstart.Base-class.html#makeString
 xpstart.scenery.Scenery.title	xpstart.scenery.Scenery-class.html#title
 xpstart.scenery.Scenery.searchIcaoCodes	xpstart.scenery.Scenery-class.html#searchIcaoCodes
@@ -47,7 +49,7 @@ xpstart.scenery.Scenery.aptDat	xpstart.scenery.Scenery-class.html#aptDat
 xpstart.scenery.Scenery.aptDatPath	xpstart.scenery.Scenery-class.html#aptDatPath
 xpstart.xpstart.Base.readData	xpstart.xpstart.Base-class.html#readData
 xpstart.xpstart.Base.makeDict	xpstart.xpstart.Base-class.html#makeDict
-xpstart.scenery.Scenery.sceneryTxt	xpstart.scenery.Scenery-class.html#sceneryTxt
+xpstart.scenery.Scenery.loadSceneryTxt	xpstart.scenery.Scenery-class.html#loadSceneryTxt
 xpstart.xpstart.Base.getTxtProperty	xpstart.xpstart.Base-class.html#getTxtProperty
 xpstart.scenery.Scenery.icaoCodes	xpstart.scenery.Scenery-class.html#icaoCodes
 xpstart.xpstart.Base.parseFileLine	xpstart.xpstart.Base-class.html#parseFileLine

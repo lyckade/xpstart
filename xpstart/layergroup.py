@@ -178,8 +178,12 @@ class Layergroup(xpstart.Base):
     
     def makeSceneryEntities(self,scenery):
         """
+        This method is called by loadDefaultRules. On this way additional entities
+        can be added to the default layer definition.
         Makes one dictionary of a scenery object. This dict is used to check
-        for layer default rules
+        for layer default rules. If a new entity is needed at the default layer 
+        definition it can added here.
+        
         @type scenery: Instance of Scenery Object
         """
         #entities = {}
