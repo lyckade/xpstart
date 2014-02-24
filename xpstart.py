@@ -1,6 +1,7 @@
 import xpstart.layergroup
+import os.path
 
-xppath = r"C:\Users\Winuser\Desktop\X-Plane 10"
+xppath = os.path.dirname(__file__) # Can be set, if xpstart is installed outside of the XP installation
 
 lg = xpstart.layergroup.Layergroup(xppath)
 sceneries = []
