@@ -32,25 +32,55 @@
 
         <section id="main_content">
           <h1>
-<a name="idea" class="anchor" href="#idea"><span class="octicon octicon-link"></span></a>Idea</h1>
+<a name="user-documentation" class="anchor" href="#user-documentation"><span class="octicon octicon-link"></span></a>User documentation</h1>
 
-<p>X-Plane 10 is a very good flightsimulator. It runs on all operating systems and makes really a lot of fun. But there are some things missing. Specially the administration of sceneries is not good solved at the moment. Here xpstart can take care about the order x-plane loads the sceneries. Therefore the user should use xpstart to start x-plane and everything should handled automaticly.</p>
+<h2>
+<a name="description" class="anchor" href="#description"><span class="octicon octicon-link"></span></a>Description</h2>
 
-<h1>
-<a name="the-situation-in-x-plane" class="anchor" href="#the-situation-in-x-plane"><span class="octicon octicon-link"></span></a>The situation in X-Plane</h1>
+<p>In X-Plane 10 the way all sceneries are organized had changed to the previous versions. The order how the sceneries are loaded is stored in the file <code>scenery_packs.ini</code>. Usually everything works fine without conflicts, but the more different kind of sceneries are installed the order in that file has to be changed.</p>
 
-<p>But what is the problem? For this we need to look a little bit closer to the different sceneries. Not every scenery does the same. There is for example an airport scenery. Here are information about objects like buildings and taxi- or runways. </p>
+<p>Specially with better OpenStreeMap data there are more automatic generated sceneries, which can cause more and more conflicts. To take care about the correct order the xpstart has been developed. </p>
 
-<p>There are automatic generated sceneries with thousands of objects or phototextures. Now there are also a lot of default airports in the x-plane world. These different kinds of sceneries are ordered by the time of the installation or in alphabetic order. Normally it works, but it can causes some conflicts.</p>
+<p>xpstart analyses all your sceneries and groups them. After that it updates the <code>scenery_packs.ini</code> file. Everything works automatically.</p>
 
-<p>It doesn't matter if Munich Airport loaded before London or Amsterdam, but the airport of munich should be loaded after the phototexture of Germany.</p>
+<h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
 
-<p>That the different kind of sceneries are loaded in correct orders we need to group them. A group of sceneries in xpstart are called layer. </p>
+<ul>
+<li>Copy the <code>xpstart.py</code> file and the <code>xpstart</code> folder into your x-plane folder.</li>
+<li>Ready</li>
+</ul><h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
 
-<h1>
-<a name="layers" class="anchor" href="#layers"><span class="octicon octicon-link"></span></a>Layers</h1>
+<ul>
+<li>When you install a new scenery, you copy the scenery into your custom scenery folder</li>
+<li>Then run the xpstart.py script</li>
+<li>Start or restart x-plane</li>
+<li>Ready</li>
+</ul><h2>
+<a name="comming-features" class="anchor" href="#comming-features"><span class="octicon octicon-link"></span></a>Comming features</h2>
 
-<p>X-Plane sceneries can be grouped what they do. It is important that the groups are loaded in the correct order. The following groups are ordered the way x-plane should load them: </p>
+<ul>
+<li>In future xpstart can be used to start x-plane. xpstart takes care about the sceneries, updated the scenery_packs.ini file and starts afterwards x-plane. That feature is not part of the first demo version.</li>
+</ul><h1>
+<a name="scenery-developer-documentation" class="anchor" href="#scenery-developer-documentation"><span class="octicon octicon-link"></span></a>Scenery developer documentation</h1>
+
+<h2>
+<a name="power-to-the-scenery-developer" class="anchor" href="#power-to-the-scenery-developer"><span class="octicon octicon-link"></span></a>Power to the scenery developer</h2>
+
+<p>Inside x-plane the scenery developer were never able to define, when his scenery should be loaded. Until XP9 it was always the alphabetic order of the folder names. That was a good way until the scenery was renamed. With XP 10 there is no such possibility any more. Therefore xpstart gives the scenery developer the possibility to define, which kind of scenery it is and when it should be loaded.</p>
+
+<p>During the support process it is not necessary to describe, how the user should deal with the scenery_packs.ini file. Just recommend to install xpstart and the conflicts should be gone.</p>
+
+<h2>
+<a name="how-to-support-xpstart" class="anchor" href="#how-to-support-xpstart"><span class="octicon octicon-link"></span></a>How to support xpstart?</h2>
+
+<p>The xpstart algorithm is able to find a default layer for your scenery. But to make sure that xpstart uses the correct layer you can define the layer inside of your scenery. For that you need to add a simple text file with the name <code>scenery.txt</code> to your scenery folder. Same place where you put the <code>library.txt</code>. Inside the scenery.txt file you can define the layer with the command <code>LAYERGROUP</code>. </p>
+
+<h2>
+<a name="layers" class="anchor" href="#layers"><span class="octicon octicon-link"></span></a>Layers</h2>
+
+<p>Following layers are supported by xpstart at the moment:</p>
 
 <ul>
 <li>
@@ -64,21 +94,15 @@
 <li>
 <strong>default</strong>: The x-plane default sceneries.</li>
 <li>
-<strong>exclusion</strong>: Exclusion sceneries just have exclusions inside. Thesese sceneries are necessary, when a custom scenery don't have any exclusions. That there are no problems it is the easiest way to make a scenery just with exclusions inside.</li>
+<strong>exclusion</strong>: Exclusion sceneries just have exclusions inside. These sceneries are necessary, when a custom scenery don't have any exclusions. That there will be no conflict it is the easiest way to make a scenery just with exclusions inside.</li>
 <li>
 <strong>custom</strong>: Custom sceneries for airports or other landmarks.</li>
-</ul><h1>
-<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h1>
+</ul><h2>
+<a name="examples" class="anchor" href="#examples"><span class="octicon octicon-link"></span></a>Examples</h2>
 
-<ul>
-<li>Make sure that python is installed on your computer</li>
-<li>Just unzip the repository and copy it to the root folder of x-plane. To start just click on the xpstart.py file.</li>
-</ul><h1>
-<a name="power-to-the-scenery-creators" class="anchor" href="#power-to-the-scenery-creators"><span class="octicon octicon-link"></span></a>Power to the scenery creators</h1>
+<p>The scenery for an airport would be the layer <em>custom</em>. Therefore the content of the scenery.txt file would be:<br><code>LAYERGROUP custom</code></p>
 
-<p>In x-plane there is no possibility for the scenery creator to define, when it would be the best moment, when x-plane should initialize that scenery. Specially for libraries, photsceneries or autogen sceneries this possibility would be very useful. </p>
-
-<p>That xpstart orders a scenery to a different layer there is the possibility to define it inside the scenery folder. To do this a textfile <code>scenery.txt</code> should be added inside the scenery folder. To define the layer the command <code>LAYERGROUP layername</code> has to be added to the file. For example <code>LAYERGROUP autogen</code> would order that scenery after the textures but before the default airports.</p>
+<p>An automatic generated scenery with the tool <a href="http://osm2xp.com/">osm2xp</a> would be the layer <em>autogen</em>.<br><code>LAYERGROUP autogen</code></p>
         </section>
 
         <footer>
