@@ -88,6 +88,7 @@ class Scenery(xpstart.Base):
             counter[objType] = 0
         # sum is for the sum() of all objects
         counter['sum'] = 0
+        self.echo("Analysing objects from %s" % (self.title))
         for path,dirs,files in os.walk(self.path):
             if os.path.basename(path) in exceptionDirs:
                 continue
@@ -109,6 +110,8 @@ class Scenery(xpstart.Base):
         """
         cacheStr = self.readData("counter")
         if cacheStr is not "":
+            self.echo("Loading Data for %s from cache" % (self.title))
+            self.log("Object count for %s" % (self.title))
             return self.makeDict(cacheStr)
         else:
             counter = self.countObjects()

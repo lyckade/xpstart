@@ -21,6 +21,8 @@ class Scenerypacks():
         
         self.pathIniFile = "%s/%s/%s" % (self.xpPath,self.__sceneryFolder,self.__iniFile)
         
+        self.backupFile = "xpstart/scenery_packs.ini.bak" #: Backup filename
+        
         self.__iniHeader = ["I",
                             "1000 version",
                             "SCENERY",
@@ -106,6 +108,8 @@ class Scenerypacks():
         If there is a entry in the old ini file the command of that will be used.
         @param path: the path to the ini file. If empty the class parameter is used
         """
+        import shutil
+        shutil.copy(self.pathIniFile,self.backupFile)
         if path == "":
             path = self.pathIniFile
         iniFile = open(self.pathIniFile,"w")
