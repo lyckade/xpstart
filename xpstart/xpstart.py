@@ -5,6 +5,7 @@ class Base():
     classes. These are some global definitions
     """
     
+    
     def __init__(self):
         #=======================================================================
         # Object Types
@@ -32,7 +33,7 @@ class Base():
         # In one file there can be stored more data. The logic for storing is
         # classname:title:dataname:data
         #=======================================================================
-        self.dataFile = "data/cache.ini"
+        self.dataFile = "xpstart/cache.ini"
         
         #=======================================================================
         # The delimiters are stored as parameter
@@ -41,8 +42,17 @@ class Base():
         #=======================================================================
         self.dataDelimiterKey = ","
         self.dataDelimiterEntry = ";"
+        
+        self.logFile = "xpstart/Log.txt"
     
     
+    def echo(self,txt):
+        """
+        Method for sending text message to the user
+        """
+        print txt
+        
+        
     def getTxtProperty(self,property,path):
         """
         Method to get the value of a property which is defined in a txt file
@@ -55,6 +65,13 @@ class Base():
                 return " ".join(c[1:])
         f.close()
         return ""
+    
+    def log(self,txt):
+        import datetime
+        timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        lf = open(self.logFile,"a")
+        lf.write("%s: %s\n" % (timestamp,txt))
+        lf.close()
     
     def makeDict(self,s):
         """
