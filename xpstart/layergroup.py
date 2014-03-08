@@ -152,6 +152,7 @@ class Layergroup(xpstart.Base):
             self.layers[title]['object'] = Layer(title)
             # Make instance here for easy append later
             self.layers[title]['sceneries'] = []
+            self.layers[title]['icaos'] = {}
         
         
     def loadXpSceneries(self):
@@ -173,7 +174,22 @@ class Layergroup(xpstart.Base):
                 else:
                     layerTitle = self.searchDefaultLayer(sceneryObj)
                 if layerTitle in self.layers:
+                    # Add scenerie to layer
                     self.layers[layerTitle]['sceneries'].append(sceneryObj.title)
+                    # Icao Codes for a layer are collected
+                    # All is put into a dictionary
+                    if len(sceneryObj.icaoCodes)>0:
+                        for icao in sceneryObj.icaoCodes:
+                            if icao == "":
+                                continue
+                            # First time a list for every icao has to be defined
+                            if icao not in self.layers[layerTitle]['icaos']:
+                                self.layers[layerTitle]['icaos'][icao] = []
+                            else:
+                                # Give out a warning!
+                                self.log("Warning: %s in scenery %s is not the first apearance of that icao in that layer!" % (icao,sceneryObj.title))
+                            self.layers[layerTitle]['icaos'][icao].append(sceneryObj.title)
+                    #self.layers[layerTitle]['icaos'].append(sceneryObj.icaoCodes)
         return sceneries
     
     def makeSceneryEntities(self,scenery):
