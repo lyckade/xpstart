@@ -136,6 +136,21 @@ class Layergroup(xpstart.Base):
         """All active sceneries of the XP installation are loaded as scenery objects"""
         
         
+    def checkIcaos(self):
+        """
+        Walks over all layers and returns a dict with the layername icao an scenerynames
+        
+        """
+        warnings = {} #: Dictionary where all the warnings are collected
+        for layer in self.layers:
+            
+            for icao in self.layers[layer]['icaos']:
+                if len(self.layers[layer]['icaos'][icao])>1:
+                    if layer not in warnings:
+                        warnings[layer] = {}                    
+                    warnings[layer][icao] = self.layers[layer]['icaos'][icao]
+        return warnings
+    
     def loadLayers(self):
         """Loads the defined layers out of the dataFile and adds an Layer object
         to the self.layers list. 
