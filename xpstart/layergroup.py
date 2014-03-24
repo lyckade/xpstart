@@ -7,8 +7,10 @@ class Layer(xpstart.Base):
     The model for a scenery layer
     """
     
-    def __init__(self,title):
-        xpstart.Base.__init__(self)
+    def __init__(self,title,gui=None):
+        xpstart.Base.__init__(self,gui)
+        
+        self.gui = gui
         
         self.title = title
         #=======================================================================
@@ -99,8 +101,9 @@ class Layergroup(xpstart.Base):
     That helps to sort the sceneries.
     """
     
-    def __init__(self,xpPath):
-        xpstart.Base.__init__(self)
+    def __init__(self,xpPath,gui=None):
+        xpstart.Base.__init__(self,gui)
+        self.gui = gui
         if xpPath.endswith("/") or xpPath.endswith("\\"):
             xpPath = xpPath[:-1]
         self.xpPath = xpPath
@@ -164,7 +167,7 @@ class Layergroup(xpstart.Base):
                 continue
             self.order.append(title)
             self.layers[title] = {}
-            self.layers[title]['object'] = Layer(title)
+            self.layers[title]['object'] = Layer(title,self.gui)
             # Make instance here for easy append later
             self.layers[title]['sceneries'] = []
             self.layers[title]['icaos'] = {}
@@ -182,7 +185,7 @@ class Layergroup(xpstart.Base):
             abspath = "%s/%s" % (sceneryPath,entry)
             # A scenery has to be a directory
             if os.path.isdir(abspath):
-                sceneryObj = scenery.Scenery(abspath)
+                sceneryObj = scenery.Scenery(abspath,self.gui)
                 sceneries[sceneryObj.title] = sceneryObj
                 if sceneryObj.authLayergroup in self.layers:
                     layerTitle = sceneryObj.authLayergroup

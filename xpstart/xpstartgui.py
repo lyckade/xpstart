@@ -1,17 +1,20 @@
-import Tkinter as tk        
+import Tkinter as tk
+import tkFont        
 class XpstartView(tk.Frame):
     
     def __init__(self,parent,xppath):
         
         tk.Frame.__init__(self, parent)
         
+        self.END = tk.END
         
+        self.fontStyle = tkFont.Font(family="Arial", size=9)
 
         self.layersArea = tk.Frame(parent,borderwidth=1)
         self.layersArea.pack(padx=10,pady=10)
         self.layersLabel = tk.Label(self.layersArea,text="Layers: ")
         self.layersLabel.grid(row=0,column=0)        
-        self.layersBox = tk.Listbox(self.layersArea,height=10,width=15)
+        self.layersBox = tk.Listbox(self.layersArea,height=10,width=15,font=self.fontStyle)
         self.layersBox.grid(row=1,column=0)
         
         self.layersBox.bind("<ButtonRelease-1>", self.setActiveLayer)
@@ -30,6 +33,7 @@ class XpstartView(tk.Frame):
                                     yscrollcommand=self.sceneriesyScroll.set,
                                     height=10,
                                     width=50,
+                                    font=self.fontStyle,
                                     )
         self.sceneriesBox.grid(row=1,column=1)
         #self.sceneriesBox.pack(side=tk.LEFT)
@@ -39,9 +43,18 @@ class XpstartView(tk.Frame):
         
         self.infoArea = tk.Frame(parent,borderwidth=1)
         self.infoArea.pack()
-        self.messageBox = tk.Text(self.infoArea,width=40,height=6)
-        self.messageBox.grid(row=1)      
-        self.messageBox.insert(tk.END, "Test")
+        self.messageScroll = tk.Scrollbar(self.infoArea, orient=tk.VERTICAL)
+        self.messageScroll.grid(row=1,column=1,sticky=tk.N+tk.S+tk.E+tk.W)
+        self.messageBox = tk.Text(
+                                  self.infoArea,
+                                  yscrollcommand=self.messageScroll.set,
+                                  width=50,
+                                  height=6,
+                                  font=self.fontStyle,
+                                  )
+        self.messageBox.grid(row=1,column=0)
+        self.messageScroll.config(command = self.messageBox.yview)      
+        #self.messageBox.insert(tk.END, "Test")
         
         #------------------------------------------------ loading the controller
         self.controller = XpstartController(xppath,self)
@@ -78,11 +91,12 @@ class XpstartController:
     def __init__(self,xppath,gui):
         
         self.gui = gui
-        self.gui.messageBox.insert(tk.END, "Test ueber Controller")
+
         self.activeLayer = ''
         self.xppath = xppath
         
-        self.lg = layergroup.Layergroup(self.xppath)
+        self.lg = layergroup.Layergroup(self.xppath,self.gui)
+        
         self.sceneries = []
         for lname in self.lg.order:
             l = self.lg.layers[lname]

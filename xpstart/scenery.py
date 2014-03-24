@@ -7,13 +7,13 @@ class Scenery(xpstart.Base):
     just the path to the scenery goes to the constructor. 
     """
 
-    def __init__(self,path):
+    def __init__(self,path,gui=None):
         """
         @type path: string
         @param path: the path to the scenery without ending "/"
         """
         
-        xpstart.Base.__init__(self)
+        xpstart.Base.__init__(self,gui)
         
 
         self.__pathAptDat = "/Earth nav data/apt.dat"

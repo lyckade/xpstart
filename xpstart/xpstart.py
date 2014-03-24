@@ -6,7 +6,7 @@ class Base():
     """
     
     
-    def __init__(self):
+    def __init__(self,gui=None):
         #=======================================================================
         # Object Types
         # Used for counting the objects
@@ -27,6 +27,11 @@ class Base():
         # That the cache functions work an empty title is created
         #=======================================================================
         self.title = ""
+        
+        #=======================================================================
+        # Possibility to store a object for the gui to send messages
+        #=======================================================================
+        self.gui = gui
         
         #=======================================================================
         # The file were the data of the class is cached
@@ -50,7 +55,10 @@ class Base():
         """
         Method for sending text message to the user
         """
-        print txt
+        if self.gui == None:
+            print txt
+        else:
+            self.gui.messageBox.insert(self.gui.END, "%s\n" % (txt))
         
         
     def getTxtProperty(self,property,path):
