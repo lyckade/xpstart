@@ -8,13 +8,22 @@ class XpstartView(tk.Frame):
         
         self.END = tk.END
         
-        self.fontStyle = tkFont.Font(family="Arial", size=9)
+        self.fontStyle = tkFont.Font(family="Helvetica", size=9)
 
         self.layersArea = tk.Frame(parent,borderwidth=1)
         self.layersArea.pack(padx=10,pady=10)
         self.layersLabel = tk.Label(self.layersArea,text="Layers: ")
-        self.layersLabel.grid(row=0,column=0)        
-        self.layersBox = tk.Listbox(self.layersArea,height=10,width=15,font=self.fontStyle)
+        self.layersLabel.grid(row=0,column=0)  
+        
+        self.layersScroll = tk.Scrollbar(self.layersArea, orient=tk.VERTICAL)
+        self.layersScroll.grid(row=1,column=1,sticky=tk.N+tk.S+tk.E+tk.W)
+              
+        self.layersBox = tk.Listbox(
+                                    self.layersArea,
+                                    yscrollcommand=self.layersScroll.set,
+                                    height=10,
+                                    width=15,
+                                    font=self.fontStyle)
         self.layersBox.grid(row=1,column=0)
         
         self.layersBox.bind("<ButtonRelease-1>", self.setActiveLayer)
@@ -23,10 +32,10 @@ class XpstartView(tk.Frame):
         #self.sceneriesArea.pack(side=tk.LEFT,fill=tk.X,padx=10,pady=10)
 
         self.sceneriesLabel = tk.Label(self.layersArea,text="Sceneries: ")
-        self.sceneriesLabel.grid(row=0,column=1)
+        self.sceneriesLabel.grid(row=0,column=2)
         
         self.sceneriesyScroll = tk.Scrollbar(self.layersArea, orient=tk.VERTICAL)
-        self.sceneriesyScroll.grid(row=1,column=2,sticky=tk.N+tk.S+tk.E+tk.W)
+        self.sceneriesyScroll.grid(row=1,column=3,sticky=tk.N+tk.S+tk.E+tk.W)
         
         self.sceneriesBox = tk.Listbox(
                                     self.layersArea,
@@ -35,7 +44,7 @@ class XpstartView(tk.Frame):
                                     width=50,
                                     font=self.fontStyle,
                                     )
-        self.sceneriesBox.grid(row=1,column=1)
+        self.sceneriesBox.grid(row=1,column=2)
         #self.sceneriesBox.pack(side=tk.LEFT)
         self.sceneriesyScroll.config(command = self.sceneriesBox.yview)
         
@@ -48,7 +57,7 @@ class XpstartView(tk.Frame):
         self.messageBox = tk.Text(
                                   self.infoArea,
                                   yscrollcommand=self.messageScroll.set,
-                                  width=50,
+                                  width=65,
                                   height=6,
                                   font=self.fontStyle,
                                   )

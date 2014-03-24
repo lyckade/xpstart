@@ -59,6 +59,7 @@ class Base():
             print txt
         else:
             self.gui.messageBox.insert(self.gui.END, "%s\n" % (txt))
+            self.gui.messageBox.see(self.gui.END)
         
         
     def getTxtProperty(self,property,path):
