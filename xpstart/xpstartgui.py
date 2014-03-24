@@ -48,7 +48,19 @@ class XpstartView(tk.Frame):
         #self.sceneriesBox.pack(side=tk.LEFT)
         self.sceneriesyScroll.config(command = self.sceneriesBox.yview)
         
+        self.sceneriesBox.bind("<ButtonRelease-1>", self.setActiveScenery)
         
+        
+        self.sceneriesDetailsNameLabel = tk.Label(self.layersArea,text="Scenery Name: ")
+        self.sceneriesDetailsNameLabel.grid(row=2,column=2)
+        self.sceneriesDetailsName = tk.Text(
+                                    self.layersArea,
+                                    width=50,
+                                    height=1,
+                                    #state=tk.DISABLED,
+                                    font=self.fontStyle,
+                                            )
+        self.sceneriesDetailsName.grid(row=3,column=2)
         
         self.infoArea = tk.Frame(parent,borderwidth=1)
         self.infoArea.pack()
@@ -80,8 +92,8 @@ class XpstartView(tk.Frame):
             
     def loadSceneries(self):
         self.sceneriesBox.delete(0, tk.END)
-        sceneries = self.controller.getSceneries()
-        for s in sceneries:
+        self.sceneries = self.controller.getSceneries()
+        for s in self.sceneries:
             self.sceneriesBox.insert(tk.END,s)
             
     def setActiveLayer(self,data):
@@ -91,6 +103,15 @@ class XpstartView(tk.Frame):
         self.loadSceneries()
         #print self.layersBox.curselection()
         #print data
+        
+    def setActiveScenery(self,data):
+        print self.sceneriesBox.curselection()[0]
+        #self.controller.activeLayer = self.controller.lg.order[int(self.layersBox.curselection()[0])]
+        self.sceneries = self.controller.getSceneries()
+        print self.sceneries[int(self.sceneriesBox.curselection()[0])]
+        #self.sceneriesDetailsName.insert(tk.END," ")
+        self.sceneriesDetailsName.delete(0.0,tk.END)
+        self.sceneriesDetailsName.insert(tk.END,self.sceneries[int(self.sceneriesBox.curselection()[0])])
 
 import layergroup
 import xpstart  
