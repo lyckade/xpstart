@@ -9,14 +9,15 @@ class XpstartView(tk.Frame):
         self.END = tk.END
         
         self.fontStyle = tkFont.Font(family="Helvetica", size=9)
-
+        gridrowLayers = 0
         self.layersArea = tk.Frame(parent,borderwidth=1)
         self.layersArea.pack(padx=10,pady=10)
         self.layersLabel = tk.Label(self.layersArea,text="Layers: ")
-        self.layersLabel.grid(row=0,column=0)  
+        self.layersLabel.grid(row=gridrowLayers,column=0)  
         
+        gridrowLayers = gridrowLayers + 1
         self.layersScroll = tk.Scrollbar(self.layersArea, orient=tk.VERTICAL)
-        self.layersScroll.grid(row=1,column=1,sticky=tk.N+tk.S+tk.E+tk.W)
+        self.layersScroll.grid(row=gridrowLayers,column=1,sticky=tk.N+tk.S+tk.E+tk.W)
               
         self.layersBox = tk.Listbox(
                                     self.layersArea,
@@ -24,18 +25,21 @@ class XpstartView(tk.Frame):
                                     height=10,
                                     width=15,
                                     font=self.fontStyle)
-        self.layersBox.grid(row=1,column=0)
+        self.layersBox.grid(row=gridrowLayers,column=0)
         
         self.layersBox.bind("<ButtonRelease-1>", self.setActiveLayer)
         
         #self.sceneriesArea = tk.Frame(parent,borderwidth=1)
         #self.sceneriesArea.pack(side=tk.LEFT,fill=tk.X,padx=10,pady=10)
+        
+        gridrowRight = 0
 
         self.sceneriesLabel = tk.Label(self.layersArea,text="Sceneries: ")
-        self.sceneriesLabel.grid(row=0,column=2)
+        self.sceneriesLabel.grid(row=gridrowRight,column=2)
         
+        gridrowRight = gridrowRight + 1
         self.sceneriesyScroll = tk.Scrollbar(self.layersArea, orient=tk.VERTICAL)
-        self.sceneriesyScroll.grid(row=1,column=3,sticky=tk.N+tk.S+tk.E+tk.W)
+        self.sceneriesyScroll.grid(row=gridrowRight,column=3,sticky=tk.N+tk.S+tk.E+tk.W)
         
         self.sceneriesBox = tk.Listbox(
                                     self.layersArea,
@@ -44,15 +48,15 @@ class XpstartView(tk.Frame):
                                     width=50,
                                     font=self.fontStyle,
                                     )
-        self.sceneriesBox.grid(row=1,column=2)
+        self.sceneriesBox.grid(row=gridrowRight,column=2)
         #self.sceneriesBox.pack(side=tk.LEFT)
         self.sceneriesyScroll.config(command = self.sceneriesBox.yview)
         
         self.sceneriesBox.bind("<ButtonRelease-1>", self.setActiveScenery)
         
-        
+        gridrowRight = gridrowRight + 1
         self.sceneriesDetailsNameLabel = tk.Label(self.layersArea,text="Scenery Name: ")
-        self.sceneriesDetailsNameLabel.grid(row=2,column=2)
+        self.sceneriesDetailsNameLabel.grid(row=gridrowRight,column=2)
         self.sceneriesDetailsName = tk.Text(
                                     self.layersArea,
                                     width=50,
@@ -60,12 +64,14 @@ class XpstartView(tk.Frame):
                                     #state=tk.DISABLED,
                                     font=self.fontStyle,
                                             )
-        self.sceneriesDetailsName.grid(row=3,column=2)
+        gridrowRight = gridrowRight + 1
+        self.sceneriesDetailsName.grid(row=gridrowRight,column=2)
         
+        gridrowInfo = 1
         self.infoArea = tk.Frame(parent,borderwidth=1)
         self.infoArea.pack()
         self.messageScroll = tk.Scrollbar(self.infoArea, orient=tk.VERTICAL)
-        self.messageScroll.grid(row=1,column=1,sticky=tk.N+tk.S+tk.E+tk.W)
+        self.messageScroll.grid(row=gridrowInfo,column=1,sticky=tk.N+tk.S+tk.E+tk.W)
         self.messageBox = tk.Text(
                                   self.infoArea,
                                   yscrollcommand=self.messageScroll.set,
@@ -73,7 +79,7 @@ class XpstartView(tk.Frame):
                                   height=6,
                                   font=self.fontStyle,
                                   )
-        self.messageBox.grid(row=1,column=0)
+        self.messageBox.grid(row=gridrowInfo,column=0)
         self.messageScroll.config(command = self.messageBox.yview)      
         #self.messageBox.insert(tk.END, "Test")
         
