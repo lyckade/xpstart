@@ -112,29 +112,36 @@ class XpstartView(tk.Frame):
     def clickActions(self):
         
         if self.actionsStep == 0:
-            
-            self.actionButton.config(text="Loading sceneries! Can take some time.")
-
+            self.actionButton.config(
+                    text="Loading sceneries! Can take some time.",
+                    state=tk.DISABLED,
+                    )
             self.actionsStep = 1
-
             start_new_thread(self.clickActions,())
         elif self.actionsStep == 1:
-
             self.controller.initialize()
-            self.actionButton.config(text="Load sceneries")
+            self.actionButton.config(
+                    text="Load sceneries",
+                    state=tk.ACTIVE,
+                    )
             self.actionsStep = 2
         elif self.actionsStep == 2:
-
             self.loadLayers()
             self.loadSceneries()
-
             self.actionButton.config(text="Write scenery_packs.ini")
+            self.actionsStep = 3
+        elif self.actionsStep == 3:
+            self.actionButton.config(state=tk.DISABLED)
+            self.echo("Writing scenery_packs.ini")
+            self.controller.writeSceneryPacksIni()
+            self.echo("Ready")
              
         
     def loadLayers(self):
         layers = self.controller.getLayers()
         for lname in layers:
             self.layersBox.insert(tk.END,lname)
+            self.echo("Loading Layer %s" % (lname))
             
     def loadSceneries(self):
         self.sceneriesBox.delete(0, tk.END)
@@ -171,19 +178,12 @@ class XpstartController:
         self.activeLayer = ''
         self.xppath = xppath
         
-
-                
     def initialize(self):
         
         self.lg = layergroup.Layergroup(self.xppath,self.gui)
         
-        self.sceneries = []
-        for lname in self.lg.order:
-            l = self.lg.layers[lname]
-            if len(l['sceneries'])== 0:
-                continue
-            for s in sorted(l['sceneries']):
-                self.sceneries.append(s)
+        self.sceneries = self.getAllSceneries()
+        
     
     def getActiveLayer(self):
         if self.activeLayer == '' or self.activeLayer not in self.lg.order:
@@ -194,12 +194,28 @@ class XpstartController:
     def getLayers(self):
         return self.lg.order
     
+    def getAllSceneries(self):
+        sceneries = []
+        for lname in self.lg.order:
+            l = self.lg.layers[lname]
+            if len(l['sceneries'])== 0:
+                continue
+            for s in sorted(l['sceneries']):
+                sceneries.append(s)
+        return sceneries
+        
     def getSceneries(self):
         l = self.lg.layers[self.getActiveLayer()]
         sceneries = []
         for s in sorted(l['sceneries']):
             sceneries.append(s)
         return sceneries
+    
+    def writeSceneryPacksIni(self):
+        import scenerypacks
+        sp = scenerypacks.Scenerypacks(self.xppath)
+        sp.order = self.getAllSceneries()
+        sp.writeIniFile()
         
 
         

@@ -109,7 +109,9 @@ class Scenerypacks():
         @param path: the path to the ini file. If empty the class parameter is used
         """
         import shutil
-        shutil.copy(self.pathIniFile,self.backupFile)
+        if os.path.exists(self.pathIniFile):
+            shutil.copy(self.pathIniFile,self.backupFile)
+        
         if path == "":
             path = self.pathIniFile
         iniFile = open(self.pathIniFile,"w")
