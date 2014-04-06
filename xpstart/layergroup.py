@@ -129,11 +129,11 @@ class Layergroup(xpstart.Base):
         self.layerDefFile = "xpstart/layer_definitions.txt"
         """File were all the definitions to the layers are stored """
         
-        self.loadLayers()
-        """All the Layers needs to be loaded"""
-        
         
         self.sceneryFolder = "Custom Scenery" #: The name of the sceneryFolder !Don't change!
+        
+        self.loadLayers()
+        """All the Layers needs to be loaded"""
         
         self.sceneries = self.loadXpSceneries()
         """All active sceneries of the XP installation are loaded as scenery objects"""

@@ -58,8 +58,8 @@ class Base():
         if self.gui == None:
             print txt
         else:
-            self.gui.messageBox.insert(self.gui.END, "%s\n" % (txt))
-            self.gui.messageBox.see(self.gui.END)
+            self.gui.echo(txt)
+            
         
         
     def getTxtProperty(self,property,path):

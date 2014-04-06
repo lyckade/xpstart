@@ -85,6 +85,10 @@ class XpstartView(tk.Frame):
         self.loadSceneries()  
 
         
+    def echo(self,txt):
+        self.messageBox.insert(self.END, "%s\n" % (txt))
+        self.messageBox.see(self.END)
+        
     def loadLayers(self):
         layers = self.controller.getLayers()
         for lname in layers:
