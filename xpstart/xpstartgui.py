@@ -1,5 +1,8 @@
 import Tkinter as tk
 import tkFont        
+import ttk
+from thread import start_new_thread
+
 class XpstartView(tk.Frame):
     
     def __init__(self,parent,xppath):
@@ -107,12 +110,26 @@ class XpstartView(tk.Frame):
         self.messageBox.see(self.END)
         
     def clickActions(self):
+        
         if self.actionsStep == 0:
+            
+            self.actionButton.config(text="Loading sceneries! Can take some time.")
+
+            self.actionsStep = 1
+
+            start_new_thread(self.clickActions,())
+        elif self.actionsStep == 1:
+
             self.controller.initialize()
+            self.actionButton.config(text="Load sceneries")
+            self.actionsStep = 2
+        elif self.actionsStep == 2:
+
             self.loadLayers()
             self.loadSceneries()
+
             self.actionButton.config(text="Write scenery_packs.ini")
-            self.actionsStep = 1  
+             
         
     def loadLayers(self):
         layers = self.controller.getLayers()
