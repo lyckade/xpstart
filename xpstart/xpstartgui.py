@@ -9,6 +9,17 @@ class XpstartView(tk.Frame):
         self.END = tk.END
         
         self.fontStyle = tkFont.Font(family="Helvetica", size=9)
+        gridrowActions = 0
+        self.actionsStep = 0
+        self.actionsArea = tk.Frame(parent,borderwidth=1)
+        self.actionsArea.pack(padx=10,pady=10)
+        self.actionButton = tk.Button(
+                    self.actionsArea,
+                    text="Initialize Szeneries",
+                    font=self.fontStyle,
+                    command=self.clickActions,
+                    )
+        self.actionButton.grid(row=gridrowActions,column=0)
         gridrowLayers = 0
         self.layersArea = tk.Frame(parent,borderwidth=1)
         self.layersArea.pack(padx=10,pady=10)
@@ -87,13 +98,21 @@ class XpstartView(tk.Frame):
         self.controller = XpstartController(xppath,self)
         
         #----------------------------------------------- actions after the layer
-        self.loadLayers()
-        self.loadSceneries()  
+        #self.loadLayers()
+        #self.loadSceneries()  
 
         
     def echo(self,txt):
         self.messageBox.insert(self.END, "%s\n" % (txt))
         self.messageBox.see(self.END)
+        
+    def clickActions(self):
+        if self.actionsStep == 0:
+            self.controller.initialize()
+            self.loadLayers()
+            self.loadSceneries()
+            self.actionButton.config(text="Write scenery_packs.ini")
+            self.actionsStep = 1  
         
     def loadLayers(self):
         layers = self.controller.getLayers()
@@ -134,6 +153,10 @@ class XpstartController:
 
         self.activeLayer = ''
         self.xppath = xppath
+        
+
+                
+    def initialize(self):
         
         self.lg = layergroup.Layergroup(self.xppath,self.gui)
         
