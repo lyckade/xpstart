@@ -187,7 +187,10 @@ class Layergroup(xpstart.Base):
             if os.path.isdir(abspath):
                 sceneryObj = scenery.Scenery(abspath,self.gui)
                 sceneries[sceneryObj.title] = sceneryObj
-                if sceneryObj.authLayergroup in self.layers:
+                # First the userLayer than authLayergoup than default
+                if sceneryObj.userLayer in self.layers:
+                    layerTitle = sceneryObj.userLayer
+                elif sceneryObj.authLayergroup in self.layers:
                     layerTitle = sceneryObj.authLayergroup
                 else:
                     layerTitle = self.searchDefaultLayer(sceneryObj)

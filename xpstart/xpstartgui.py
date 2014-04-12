@@ -71,6 +71,7 @@ class XpstartView(tk.Frame):
         gridrowRight = gridrowRight + 1
         self.sceneriesDetailsNameLabel = tk.Label(self.layersArea,text="Scenery Name: ")
         self.sceneriesDetailsNameLabel.grid(row=gridrowRight,column=2)
+        gridrowRight = gridrowRight + 1
         self.sceneriesDetailsName = tk.Text(
                                     self.layersArea,
                                     width=50,
@@ -78,9 +79,19 @@ class XpstartView(tk.Frame):
                                     #state=tk.DISABLED,
                                     font=self.fontStyle,
                                             )
-        gridrowRight = gridrowRight + 1
-        self.sceneriesDetailsName.grid(row=gridrowRight,column=2)
         
+        self.sceneriesDetailsName.grid(row=gridrowRight,column=2)
+        gridrowRight = gridrowRight + 1
+        self.sceneriesDetailsUserlayerLabel = tk.Label(self.layersArea,text="Change Layer to: ")
+        self.sceneriesDetailsUserlayerLabel.grid(row=gridrowRight,column=2)
+        gridrowRight = gridrowRight + 1
+        self.sceneriesDetailsUserlayer = ttk.Combobox(
+                                    self.layersArea,
+                                    state=tk.DISABLED,
+                                    width=47,
+                                    font=self.fontStyle)
+        self.sceneriesDetailsUserlayer.bind('<<ComboboxSelected>>',self.setUserLayer)
+        self.sceneriesDetailsUserlayer.grid(row=gridrowRight,column=2)
         gridrowInfo = 1
         self.infoArea = tk.Frame(parent,borderwidth=1)
         self.infoArea.pack()
@@ -129,8 +140,14 @@ class XpstartView(tk.Frame):
             self.loadLayers()
             self.loadSceneries()
             self.actionButton.config(text="Write scenery_packs.ini")
-            self.actionsStep = 3
+            self.actionsStep = 4
         elif self.actionsStep == 3:
+            self.controller.initialize()
+            self.loadLayers()
+            self.loadSceneries()
+            self.actionButton.config(text="Write scenery_packs.ini")
+            self.actionsStep = 4
+        elif self.actionsStep == 4:
             self.actionButton.config(state=tk.DISABLED)
             self.echo("Writing scenery_packs.ini")
             self.controller.writeSceneryPacksIni()
@@ -138,7 +155,9 @@ class XpstartView(tk.Frame):
              
         
     def loadLayers(self):
+        self.layersBox.delete(0,tk.END)
         layers = self.controller.getLayers()
+        self.sceneriesDetailsUserlayer['values'] = layers
         for lname in layers:
             self.layersBox.insert(tk.END,lname)
             self.echo("Loading Layer %s" % (lname))
@@ -161,10 +180,21 @@ class XpstartView(tk.Frame):
         print self.sceneriesBox.curselection()[0]
         #self.controller.activeLayer = self.controller.lg.order[int(self.layersBox.curselection()[0])]
         self.sceneries = self.controller.getSceneries()
-        print self.sceneries[int(self.sceneriesBox.curselection()[0])]
+        sceneryTitle = self.sceneries[int(self.sceneriesBox.curselection()[0])]
         #self.sceneriesDetailsName.insert(tk.END," ")
         self.sceneriesDetailsName.delete(0.0,tk.END)
-        self.sceneriesDetailsName.insert(tk.END,self.sceneries[int(self.sceneriesBox.curselection()[0])])
+        self.sceneriesDetailsName.insert(tk.END,sceneryTitle)
+        self.sceneriesDetailsUserlayer.config(state=tk.ACTIVE)
+        self.controller.setActiveScenery(sceneryTitle)
+        self.sceneriesDetailsUserlayer.set(self.controller.activeScenery.getUserLayer())
+    
+    
+    def setUserLayer(self,data):
+        userLayer = self.sceneriesDetailsUserlayer.get()
+        self.controller.activeScenery.writeUserLayer(userLayer)
+        self.actionsStep = 3
+        self.actionButton.config(text="Reload sceneries")
+        
 
 import layergroup
 import xpstart  
@@ -181,7 +211,6 @@ class XpstartController:
     def initialize(self):
         
         self.lg = layergroup.Layergroup(self.xppath,self.gui)
-        
         self.sceneries = self.getAllSceneries()
         
     
@@ -210,6 +239,12 @@ class XpstartController:
         for s in sorted(l['sceneries']):
             sceneries.append(s)
         return sceneries
+    
+    def setActiveScenery(self,sceneryTitle):
+        import scenery
+        path = "%s/Custom Scenery/%s" % (self.xppath,sceneryTitle)
+        self.activeScenery = scenery.Scenery(path)
+
     
     def writeSceneryPacksIni(self):
         import scenerypacks
