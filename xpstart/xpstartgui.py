@@ -177,11 +177,9 @@ class XpstartView(tk.Frame):
         #print data
         
     def setActiveScenery(self,data):
-        print self.sceneriesBox.curselection()[0]
-        #self.controller.activeLayer = self.controller.lg.order[int(self.layersBox.curselection()[0])]
+        
         self.sceneries = self.controller.getSceneries()
         sceneryTitle = self.sceneries[int(self.sceneriesBox.curselection()[0])]
-        #self.sceneriesDetailsName.insert(tk.END," ")
         self.sceneriesDetailsName.delete(0.0,tk.END)
         self.sceneriesDetailsName.insert(tk.END,sceneryTitle)
         self.sceneriesDetailsUserlayer.config(state=tk.ACTIVE)
@@ -243,7 +241,7 @@ class XpstartController:
     def setActiveScenery(self,sceneryTitle):
         import scenery
         path = "%s/Custom Scenery/%s" % (self.xppath,sceneryTitle)
-        self.activeScenery = scenery.Scenery(path)
+        self.activeScenery = scenery.Scenery(path,self.gui)
 
     
     def writeSceneryPacksIni(self):
