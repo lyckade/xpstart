@@ -1,28 +1,13 @@
-
-import xpstart.layergroup
-import xpstart.xpstart
 import os.path
+import Tkinter
+from xpstart.xpstartgui import XpstartView
 
-b = xpstart.xpstart.Base()
 
 xppath = os.path.dirname(__file__) # Can be set, if xpstart is installed outside of the XP installation
+  
+root = Tkinter.Tk()
+root.minsize(450, 400)
+root.title("xpstart 0.90")
+mainApp = XpstartView(root,xppath)
+root.mainloop()  
 
-layerOutputFile = "xpstart/scenerypacks_info.txt"
-
-lo = open(layerOutputFile,"w")
-
-lg = xpstart.layergroup.Layergroup(xppath)
-sceneries = []
-for lname in lg.order:
-    lo.write("\nLayer: %s\n" % (lname))
-    l = lg.layers[lname]
-    if len(l['sceneries'])== 0:
-        continue
-    for s in sorted(l['sceneries']):
-        sceneries.append(s)
-        b.echo(s)
-        lo.write("%s\n"%(s))
-import xpstart.scenerypacks
-sp = xpstart.scenerypacks.Scenerypacks(xppath)
-sp.order = sceneries
-sp.writeIniFile()

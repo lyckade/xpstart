@@ -7,8 +7,10 @@ class Layer(xpstart.Base):
     The model for a scenery layer
     """
     
-    def __init__(self,title):
-        xpstart.Base.__init__(self)
+    def __init__(self,title,gui=None):
+        xpstart.Base.__init__(self,gui)
+        
+        self.gui = gui
         
         self.title = title
         #=======================================================================
@@ -99,8 +101,9 @@ class Layergroup(xpstart.Base):
     That helps to sort the sceneries.
     """
     
-    def __init__(self,xpPath):
-        xpstart.Base.__init__(self)
+    def __init__(self,xpPath,gui=None):
+        xpstart.Base.__init__(self,gui)
+        self.gui = gui
         if xpPath.endswith("/") or xpPath.endswith("\\"):
             xpPath = xpPath[:-1]
         self.xpPath = xpPath
@@ -126,16 +129,31 @@ class Layergroup(xpstart.Base):
         self.layerDefFile = "xpstart/layer_definitions.txt"
         """File were all the definitions to the layers are stored """
         
-        self.loadLayers()
-        """All the Layers needs to be loaded"""
-        
         
         self.sceneryFolder = "Custom Scenery" #: The name of the sceneryFolder !Don't change!
+        
+        self.loadLayers()
+        """All the Layers needs to be loaded"""
         
         self.sceneries = self.loadXpSceneries()
         """All active sceneries of the XP installation are loaded as scenery objects"""
         
         
+    def checkIcaos(self):
+        """
+        Walks over all layers and returns a dict with the layername icao an scenerynames
+        
+        """
+        warnings = {} #: Dictionary where all the warnings are collected
+        for layer in self.layers:
+            
+            for icao in self.layers[layer]['icaos']:
+                if len(self.layers[layer]['icaos'][icao])>1:
+                    if layer not in warnings:
+                        warnings[layer] = {}                    
+                    warnings[layer][icao] = self.layers[layer]['icaos'][icao]
+        return warnings
+    
     def loadLayers(self):
         """Loads the defined layers out of the dataFile and adds an Layer object
         to the self.layers list. 
@@ -149,9 +167,10 @@ class Layergroup(xpstart.Base):
                 continue
             self.order.append(title)
             self.layers[title] = {}
-            self.layers[title]['object'] = Layer(title)
+            self.layers[title]['object'] = Layer(title,self.gui)
             # Make instance here for easy append later
             self.layers[title]['sceneries'] = []
+            self.layers[title]['icaos'] = {}
         
         
     def loadXpSceneries(self):
@@ -166,14 +185,32 @@ class Layergroup(xpstart.Base):
             abspath = "%s/%s" % (sceneryPath,entry)
             # A scenery has to be a directory
             if os.path.isdir(abspath):
-                sceneryObj = scenery.Scenery(abspath)
+                sceneryObj = scenery.Scenery(abspath,self.gui)
                 sceneries[sceneryObj.title] = sceneryObj
-                if sceneryObj.authLayergroup in self.layers:
+                # First the userLayer than authLayergoup than default
+                if sceneryObj.userLayer in self.layers:
+                    layerTitle = sceneryObj.userLayer
+                elif sceneryObj.authLayergroup in self.layers:
                     layerTitle = sceneryObj.authLayergroup
                 else:
                     layerTitle = self.searchDefaultLayer(sceneryObj)
                 if layerTitle in self.layers:
+                    # Add scenerie to layer
                     self.layers[layerTitle]['sceneries'].append(sceneryObj.title)
+                    # Icao Codes for a layer are collected
+                    # All is put into a dictionary
+                    if len(sceneryObj.icaoCodes)>0:
+                        for icao in sceneryObj.icaoCodes:
+                            if icao == "":
+                                continue
+                            # First time a list for every icao has to be defined
+                            if icao not in self.layers[layerTitle]['icaos']:
+                                self.layers[layerTitle]['icaos'][icao] = []
+                            else:
+                                # Give out a warning!
+                                self.log("Warning: %s in scenery %s is not the first apearance of that icao in that layer!" % (icao,sceneryObj.title))
+                            self.layers[layerTitle]['icaos'][icao].append(sceneryObj.title)
+                    #self.layers[layerTitle]['icaos'].append(sceneryObj.icaoCodes)
         return sceneries
     
     def makeSceneryEntities(self,scenery):

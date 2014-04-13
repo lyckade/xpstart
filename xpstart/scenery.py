@@ -7,13 +7,13 @@ class Scenery(xpstart.Base):
     just the path to the scenery goes to the constructor. 
     """
 
-    def __init__(self,path):
+    def __init__(self,path,gui=None):
         """
         @type path: string
         @param path: the path to the scenery without ending "/"
         """
         
-        xpstart.Base.__init__(self)
+        xpstart.Base.__init__(self,gui)
         
 
         self.__pathAptDat = "/Earth nav data/apt.dat"
@@ -73,6 +73,10 @@ class Scenery(xpstart.Base):
         One scenery can have many icao codes. The parameter is type list
         """
         
+        self.userLayer = self.getUserLayer()
+        """Initialize the userLayer
+        """
+        
         
     def countObjects(self):
         """
@@ -117,6 +121,13 @@ class Scenery(xpstart.Base):
             counter = self.countObjects()
             self.writeData("counter", self.makeString(counter))
             return counter
+    
+    def getUserLayer(self):
+        """
+        Reads the user layer out of the cache. If no layer is availiable the value is ""
+        """
+        return self.readData("userLayer")
+                
         
     def loadSceneryTxt(self):
         """Loads the scenery.txt file and sets the intern variables"""
@@ -125,6 +136,7 @@ class Scenery(xpstart.Base):
             for l in f:
                 if l.startswith("LAYERGROUP"):
                     print "H"
+                    #TODO
             f.close()
         
     def searchIcaoCodes(self):
@@ -148,6 +160,13 @@ class Scenery(xpstart.Base):
         aptDatFile.close()
         self.writeData("icao", self.makeString(icaoCodes))
         return icaoCodes
+    
+    def writeUserLayer(self,userLayer):
+        """
+        The user can choose a layer for each scenery that value ist stored
+        in the cache.
+        """
+        self.writeData("userLayer",userLayer)
     
 
     
