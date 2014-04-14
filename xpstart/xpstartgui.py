@@ -139,6 +139,7 @@ class XpstartView(tk.Frame):
         elif self.actionsStep == 2:
             self.loadLayers()
             self.loadSceneries()
+            self.doubleIcaos = self.controller.lg.checkIcaos()
             self.actionButton.config(text="Write scenery_packs.ini")
             self.actionsStep = 4
         elif self.actionsStep == 3:
@@ -148,10 +149,17 @@ class XpstartView(tk.Frame):
             self.actionButton.config(text="Write scenery_packs.ini")
             self.actionsStep = 4
         elif self.actionsStep == 4:
-            self.actionButton.config(state=tk.DISABLED)
             self.echo("Writing scenery_packs.ini")
             self.controller.writeSceneryPacksIni()
             self.echo("Ready")
+            if len(self.doubleIcaos) == 0:
+                self.actionButton.config(state=tk.DISABLED)
+            else:
+                self.actionButton.config(text="Warnings existing: Open Report" % (str(len(self.doubleIcaos))))
+                self.actionsStep = 5
+        elif self.actionsStep == 5:
+            self.echo("Report generated")
+            print self.controller.lg.checkIcaos()
              
         
     def loadLayers(self):
