@@ -153,13 +153,26 @@ class XpstartView(tk.Frame):
             self.controller.writeSceneryPacksIni()
             self.echo("Ready")
             if len(self.doubleIcaos) == 0:
-                self.actionButton.config(state=tk.DISABLED)
+                #self.actionButton.config(state=tk.DISABLED)
+                self.actionButton.config(text="Close xpstart")
+                self.actionsStep = 6
             else:
-                self.actionButton.config(text="Warnings existing: Open Report" % (str(len(self.doubleIcaos))))
+                self.actionButton.config(text="Warnings: Open Report")
                 self.actionsStep = 5
         elif self.actionsStep == 5:
+            import webbrowser
+            import os.path
+            xps_root = os.path.abspath("")
+            self.controller.makeReport(self.doubleIcaos)
+            report = os.path.join(xps_root,"xpstart","warnings.htm")
+            print report
+            webbrowser.open_new_tab(report)
             self.echo("Report generated")
+            self.actionButton.config(text="Close xpstart")
+            self.actionsStep = 6
             print self.controller.lg.checkIcaos()
+        elif self.actionsStep == 6:
+            exit()
              
         
     def loadLayers(self):
@@ -213,6 +226,7 @@ class XpstartController:
 
         self.activeLayer = ''
         self.xppath = xppath
+        self.warningsFile = "xpstart/warnings.htm"
         
     def initialize(self):
         
@@ -245,6 +259,20 @@ class XpstartController:
         for s in sorted(l['sceneries']):
             sceneries.append(s)
         return sceneries
+    
+    def makeReport(self,doubleIcaos):
+        f = open(self.warningsFile,"w")
+        f.write("<html><head><title>xpstart Report</title></head><body>\n")
+        f.write("<h1>Not unique airport definitions</h1>\n")
+        for layer in doubleIcaos:
+            f.write("<h2>Layer: %s</h2>" % (layer))
+            for icao,sceneries in doubleIcaos[layer].iteritems():
+                f.write("<p>Airport: <b>%s</b><br />" % (icao))
+                for scenery in sceneries:
+                    f.write("%s<br />" % (scenery))
+                f.write("</p>")
+                
+        f.write("</body></html>")
     
     def setActiveScenery(self,sceneryTitle):
         import scenery
