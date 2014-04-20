@@ -265,7 +265,7 @@ class XpstartController:
         f.write("<html><head><title>xpstart Report</title></head><body>\n")
         f.write("<h1>Not unique airport definitions</h1>\n")
         f.write("""
-            <p>That report analyses the icao codes inside one layer. The icao code is a
+            <p>That report analyses the icao codes. The icao code is a
             identifier for each airport. If there is more than one scenery for one 
             airport, that could cause problems. Here the user should decide to remove or 
             disable one scenery.</p>
@@ -273,13 +273,15 @@ class XpstartController:
             can get more infos about that airport.
             </p>
             """)
-        for layer in doubleIcaos:
-            f.write("<h2>Layer: %s</h2>" % (layer))
-            for icao,sceneries in doubleIcaos[layer].iteritems():
-                f.write("<p>Airport: <b><a href='http://apxp.info/airports/view/%s'>%s</a></b><br />" % (icao,icao))
-                for scenery in sceneries:
-                    f.write("%s<br />" % (scenery))
-                f.write("</p>")
+        
+        for icao in sorted(doubleIcaos):
+            sceneries = doubleIcaos[icao]
+            f.write("<p>Airport: <b><a href='http://apxp.info/airports/view/%s'>%s</a></b><br />" % (icao,icao))
+            f.write("<ul>")
+            for scenery in sceneries:
+                f.write("<li>%s</li>" % (scenery))
+            f.write("</ul>")
+            f.write("</p>")
                 
         f.write("</body></html>")
     
