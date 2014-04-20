@@ -262,7 +262,8 @@ class XpstartController:
     
     def makeReport(self,doubleIcaos):
         f = open(self.warningsFile,"w")
-        f.write("<html><head><title>xpstart Report</title></head><body>\n")
+        f.write("""<html><head><title>xpstart Report</title>
+        </head><link rel='stylesheet' type='text/css' href='style.css' /><body>\n""")
         f.write("<h1>Not unique airport definitions</h1>\n")
         f.write("""
             <p>That report analyses the icao codes. The icao code is a
