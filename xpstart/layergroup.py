@@ -154,7 +154,8 @@ class Layergroup(xpstart.Base):
                 if icao not in icaos:
                     icaos[icao] = []
                 for sc in self.layers[layer]['icaos'][icao]:
-                    icaos[icao].append("%s (%s)" % (sc,layer))
+                    
+                    icaos[icao].append({"title":sc,"layer":layer})
                 #icaos[icao] = icaos[icao] + self.layers[layer]['icaos'][icao]
         for icao in icaos:
             if len(icaos[icao])>1:

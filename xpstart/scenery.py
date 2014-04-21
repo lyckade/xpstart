@@ -106,6 +106,28 @@ class Scenery(xpstart.Base):
         return counter
     
 
+    def getSceneyPackIniStatus(self):
+        """
+        Reads the status of the scenery out of the scenery_packs.ini 
+        Returns true for enabled and false for disabled
+        """
+        iniFilePath = "%s/../scenery_packs.ini" % (self.path)
+        iniFile = open(iniFilePath,"r")
+        for l in iniFile:
+            l = l.strip()
+            c = l.split(" ")
+            cmd = c[0]
+            val = " ".join(c[1:])
+            if val.startswith("Custom Scenery") and "/" in val:
+                el = val.split("/")
+                val = el[1]
+            if val == self.title:
+                iniFile.close()
+                if cmd == "SCENERY_PACK_DISABLED":
+                    return False
+                else:
+                    return True
+    
     def getObjectCount(self):
         """
         Method to get the object count. For performance the cache is been used.

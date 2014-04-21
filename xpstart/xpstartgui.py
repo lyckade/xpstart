@@ -206,6 +206,7 @@ class XpstartView(tk.Frame):
         self.sceneriesDetailsUserlayer.config(state=tk.ACTIVE)
         self.controller.setActiveScenery(sceneryTitle)
         self.sceneriesDetailsUserlayer.set(self.controller.activeScenery.getUserLayer())
+        self.controller.activeScenery.getSceneyPackIniStatus()
     
     
     def setUserLayer(self,data):
@@ -229,9 +230,10 @@ class XpstartController:
         self.warningsFile = "xpstart/warnings.htm"
         
     def initialize(self):
-        
+        import scenerypacks
         self.lg = layergroup.Layergroup(self.xppath,self.gui)
         self.sceneries = self.getAllSceneries()
+        self.scenerypacks = scenerypacks.Scenerypacks(self.xppath)
         
     
     def getActiveLayer(self):
@@ -280,7 +282,12 @@ class XpstartController:
             f.write("<p>Airport: <b><a href='http://apxp.info/airports/view/%s'>%s</a></b><br />" % (icao,icao))
             f.write("<ul>")
             for scenery in sceneries:
-                f.write("<li>%s</li>" % (scenery))
+                cssClassDef = ""
+                disabledTxt = ""
+                if self.scenerypacks.packs[scenery["title"]] == "SCENERY_PACK_DISABLED":
+                    cssClassDef = " class='disabled' "
+                    disabledTxt = "<b>Scenery disabled:</b> "
+                f.write("<li%s>%s%s (%s)</li>" % (cssClassDef,disabledTxt,scenery["title"],scenery["layer"]))
             f.write("</ul>")
             f.write("</p>")
                 
@@ -293,10 +300,8 @@ class XpstartController:
 
     
     def writeSceneryPacksIni(self):
-        import scenerypacks
-        sp = scenerypacks.Scenerypacks(self.xppath)
-        sp.order = self.getAllSceneries()
-        sp.writeIniFile()
+        self.scenerypacks.order = self.getAllSceneries()
+        self.scenerypacks.writeIniFile()
         
 
         
