@@ -223,6 +223,7 @@ class XpstartView(tk.Frame):
         self.controller.setActiveScenery(sceneryTitle)
         self.sceneriesDetailsUserlayer.set(self.controller.activeScenery.getUserLayer())
         self.controller.activeScenery.getSceneyPackIniStatus()
+        self.controller.activeScenery.echoIcaoCodes()
         if self.controller.scenerypacks.packs[sceneryTitle] == "SCENERY_PACK_DISABLED":
             self.sceneriesDetailsDisabledVar.set(1)
         else:

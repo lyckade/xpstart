@@ -106,6 +106,11 @@ class Scenery(xpstart.Base):
         return counter
     
 
+    def echoIcaoCodes(self):
+        if len(self.icaoCodes) > 0:
+            self.echo("ICAO Definitions in %s:" % (self.title))
+            self.echo(", ".join(self.icaoCodes))
+    
     def getSceneyPackIniStatus(self):
         """
         Reads the status of the scenery out of the scenery_packs.ini 
