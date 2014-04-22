@@ -63,12 +63,16 @@ class Layer(xpstart.Base):
                     return False
                 elif rule == "is" and str(val) != str(entities[entity]):
                     return False
-                elif rule == "in":
+                elif rule == "not" and str(val) == str(entities[entity]):
+                    return False
+                elif rule == "in" or "not_in":
                     if "|" in str(val):
                         l = str(val).split("|")
                     else:
                         l = [str(val)]
-                    if str(entities[entity]) not in l:
+                    if rule == "in" and str(entities[entity]) not in l:
+                        return False
+                    elif rule == "not_in" and str(entities[entity]) in l:
                         return False
  
         return True

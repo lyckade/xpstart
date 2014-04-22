@@ -92,6 +92,20 @@ class XpstartView(tk.Frame):
                                     font=self.fontStyle)
         self.sceneriesDetailsUserlayer.bind('<<ComboboxSelected>>',self.setUserLayer)
         self.sceneriesDetailsUserlayer.grid(row=gridrowRight,column=2)
+        gridrowRight = gridrowRight + 1
+        
+        #------------------------------------------ Checkbox for disable scenery
+        self.sceneriesDetailsDisabledVar = tk.IntVar()
+        self.sceneriesDetailsDisabled = tk.Checkbutton(
+                                    self.layersArea,
+                                    variable = self.sceneriesDetailsDisabledVar,
+                                    state=tk.DISABLED,
+                                    text="Scenery disabled",
+                                    command=self.setActiveSceneryState,
+                                    font=self.fontStyle)
+        self.sceneriesDetailsDisabled.grid(row=gridrowRight,column=2)
+        
+        #------------------------------------------------- Infobox at the bottom
         gridrowInfo = 1
         self.infoArea = tk.Frame(parent,borderwidth=1)
         self.infoArea.pack()
@@ -105,7 +119,8 @@ class XpstartView(tk.Frame):
                                   font=self.fontStyle,
                                   )
         self.messageBox.grid(row=gridrowInfo,column=0)
-        self.messageScroll.config(command = self.messageBox.yview)      
+        self.messageScroll.config(command = self.messageBox.yview)  
+       
         #self.messageBox.insert(tk.END, "Test")
         
         #------------------------------------------------ loading the controller
@@ -204,9 +219,18 @@ class XpstartView(tk.Frame):
         self.sceneriesDetailsName.delete(0.0,tk.END)
         self.sceneriesDetailsName.insert(tk.END,sceneryTitle)
         self.sceneriesDetailsUserlayer.config(state=tk.ACTIVE)
+        self.sceneriesDetailsDisabled.config(state=tk.ACTIVE)
         self.controller.setActiveScenery(sceneryTitle)
         self.sceneriesDetailsUserlayer.set(self.controller.activeScenery.getUserLayer())
         self.controller.activeScenery.getSceneyPackIniStatus()
+        if self.controller.scenerypacks.packs[sceneryTitle] == "SCENERY_PACK_DISABLED":
+            self.sceneriesDetailsDisabledVar.set(1)
+        else:
+            self.sceneriesDetailsDisabledVar.set(0)
+        
+    def setActiveSceneryState(self):
+        self.controller.setActiveSceneryState(self.sceneriesDetailsDisabledVar.get())
+        
     
     
     def setUserLayer(self,data):
@@ -297,6 +321,12 @@ class XpstartController:
         import scenery
         path = "%s/Custom Scenery/%s" % (self.xppath,sceneryTitle)
         self.activeScenery = scenery.Scenery(path,self.gui)
+        
+    def setActiveSceneryState(self,state):
+        if state == 1:
+            self.scenerypacks.packs[self.activeScenery.title] = "SCENERY_PACK_DISABLED"
+        else:
+            self.scenerypacks.packs[self.activeScenery.title] = "SCENERY_PACK"
 
     
     def writeSceneryPacksIni(self):

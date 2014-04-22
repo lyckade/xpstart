@@ -178,7 +178,8 @@ class Scenery(xpstart.Base):
             if line.strip().startswith("1 "):
                 entries = line.strip().split()
                 icaoCode = entries[4]
-                icaoCodes.append(icaoCode)
+                if icaoCode not in icaoCodes:
+                    icaoCodes.append(icaoCode)
         aptDatFile.close()
         self.writeData("icao", self.makeString(icaoCodes))
         return icaoCodes
