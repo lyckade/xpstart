@@ -63,12 +63,16 @@ class Layer(xpstart.Base):
                     return False
                 elif rule == "is" and str(val) != str(entities[entity]):
                     return False
-                elif rule == "in":
+                elif rule == "not" and str(val) == str(entities[entity]):
+                    return False
+                elif rule == "in" or "not_in":
                     if "|" in str(val):
                         l = str(val).split("|")
                     else:
                         l = [str(val)]
-                    if str(entities[entity]) not in l:
+                    if rule == "in" and str(entities[entity]) not in l:
+                        return False
+                    elif rule == "not_in" and str(entities[entity]) in l:
                         return False
  
         return True
@@ -145,14 +149,28 @@ class Layergroup(xpstart.Base):
         
         """
         warnings = {} #: Dictionary where all the warnings are collected
+        icaos = {}
         for layer in self.layers:
-            
             for icao in self.layers[layer]['icaos']:
-                if len(self.layers[layer]['icaos'][icao])>1:
-                    if layer not in warnings:
-                        warnings[layer] = {}                    
-                    warnings[layer][icao] = self.layers[layer]['icaos'][icao]
+                if icao not in icaos:
+                    icaos[icao] = []
+                for sc in self.layers[layer]['icaos'][icao]:
+                    
+                    icaos[icao].append({"title":sc,"layer":layer})
+                #icaos[icao] = icaos[icao] + self.layers[layer]['icaos'][icao]
+        for icao in icaos:
+            if len(icaos[icao])>1:
+                warnings[icao] = icaos[icao]
         return warnings
+        
+#        for layer in self.layers:
+#            
+#            for icao in self.layers[layer]['icaos']:
+#                if len(self.layers[layer]['icaos'][icao])>1:
+#                    if layer not in warnings:
+#                        warnings[layer] = {}                    
+#                    warnings[layer][icao] = self.layers[layer]['icaos'][icao]
+#        return warnings
     
     def loadLayers(self):
         """Loads the defined layers out of the dataFile and adds an Layer object

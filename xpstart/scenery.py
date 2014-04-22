@@ -106,6 +106,33 @@ class Scenery(xpstart.Base):
         return counter
     
 
+    def echoIcaoCodes(self):
+        if len(self.icaoCodes) > 0:
+            self.echo("ICAO Definitions in %s:" % (self.title))
+            self.echo(", ".join(self.icaoCodes))
+    
+    def getSceneyPackIniStatus(self):
+        """
+        Reads the status of the scenery out of the scenery_packs.ini 
+        Returns true for enabled and false for disabled
+        """
+        iniFilePath = "%s/../scenery_packs.ini" % (self.path)
+        iniFile = open(iniFilePath,"r")
+        for l in iniFile:
+            l = l.strip()
+            c = l.split(" ")
+            cmd = c[0]
+            val = " ".join(c[1:])
+            if val.startswith("Custom Scenery") and "/" in val:
+                el = val.split("/")
+                val = el[1]
+            if val == self.title:
+                iniFile.close()
+                if cmd == "SCENERY_PACK_DISABLED":
+                    return False
+                else:
+                    return True
+    
     def getObjectCount(self):
         """
         Method to get the object count. For performance the cache is been used.
@@ -156,7 +183,8 @@ class Scenery(xpstart.Base):
             if line.strip().startswith("1 "):
                 entries = line.strip().split()
                 icaoCode = entries[4]
-                icaoCodes.append(icaoCode)
+                if icaoCode not in icaoCodes:
+                    icaoCodes.append(icaoCode)
         aptDatFile.close()
         self.writeData("icao", self.makeString(icaoCodes))
         return icaoCodes
