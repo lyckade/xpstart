@@ -144,9 +144,6 @@ class Layergroup(xpstart.Base):
         Walks over all layers and returns a dict with the layername icao an scenerynames
         
         """
-        
-        
-        
         warnings = {} #: Dictionary where all the warnings are collected
         icaos = {}
         for layer in self.layers:

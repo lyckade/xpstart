@@ -163,9 +163,9 @@ class XpstartView(tk.Frame):
             import webbrowser
             import os.path
             xps_root = os.path.abspath("")
-            self.controller.makeReport(self.doubleIcaos)
+            self.controller.makeReport(self.controller.lg.checkIcaos())
             report = os.path.join(xps_root,"xpstart","warnings.htm")
-            print report
+            
             webbrowser.open_new_tab(report)
             self.echo("Report generated")
             self.actionButton.config(text="Close xpstart")
