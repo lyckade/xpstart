@@ -271,4 +271,4 @@ class Layergroup(xpstart.Base):
         for layerTitle,layerDict in self.layers.items():
             if layerDict['object'].checkEntities(entities):
                 return layerTitle
-        return ""
+        return "new add-ons"

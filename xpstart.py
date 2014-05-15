@@ -7,7 +7,7 @@ xppath = os.path.dirname(__file__) # Can be set, if xpstart is installed outside
   
 root = Tkinter.Tk()
 root.minsize(450, 400)
-root.title("xpstart 0.92")
+
 mainApp = XpstartView(root,xppath)
 root.mainloop()  
 
