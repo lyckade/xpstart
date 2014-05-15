@@ -12,13 +12,15 @@ For this xpstart reorders the sceneries over the scenery_packs.ini file. Documen
 X-Plane sceneries can be grouped what they do. It is important that the groups are loaded in the correct order. The following groups are ordered the way x-plane should load them: 
 
 
-* **library**: A library is part of the custom scenery folder. It just has objects inside, which can be used by other sceneries. These is the only group where it doesn't matter when it is loaded.
-* **ground**: Defines the ground mesh of the x-plane world. If there would be a custom scenery just with a mesh inside it should be loaded with that group.
-* **texture**: The photot sceneries e.g. from simheaven.com, are sceneries just with textures inside. 
-* **autogen**: Automatic generated sceneries mostly from OpenStreetMap.
-* **default**: The x-plane default sceneries.
-* **exclusion**: Exclusion sceneries just have exclusions inside. Thesese sceneries are necessary, when a custom scenery don't have any exclusions. That there are no problems it is the easiest way to make a scenery just with exclusions inside.
-* **custom**: Custom sceneries for airports or other landmarks.
+* **Library**: A library is part of the custom scenery folder. It just has objects inside, which can be used by other sceneries. These is the only group where it doesn't matter when it is loaded.
+* **Ground mesh**: Defines the ground mesh of the x-plane world. If there would be a custom scenery just with a mesh inside it should be loaded with that group.
+* **Phototextures**: The photot sceneries e.g. from simheaven.com, are sceneries just with textures inside. 
+* **OSM scenery**: Automatic generated sceneries mostly from OpenStreetMap.
+* **Default scenery**: The x-plane default sceneries.
+* **Exclusion**: Exclusion sceneries just have exclusions inside. Thesese sceneries are necessary, when a custom scenery don't have any exclusions. That there are no problems it is the easiest way to make a scenery just with exclusions inside.
+* **Airport pack**: Custom sceneries for sceneries with more than one airport.
+* **Airport**: Custom sceneries for airports.
+* **new add-ons**: Sceneries were it was not possible to find a layer automaticaly
 
 ## Classes
 ### Layergroup
