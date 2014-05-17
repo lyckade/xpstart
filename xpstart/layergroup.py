@@ -118,6 +118,8 @@ class Layergroup(xpstart.Base):
         Title is important for the read and write methods and specify the
         instance. If not changed it will be the Default instance
         """
+        
+        self.defaultLayer = "new add-ons"
 
         self.layers = {}
         """
@@ -268,7 +270,10 @@ class Layergroup(xpstart.Base):
         if len(self.layers) == 0:
             self.loadLayers()
         entities = self.makeSceneryEntities(sceneryObj)
-        for layerTitle,layerDict in self.layers.items():
-            if layerDict['object'].checkEntities(entities):
+        checkOrder = self.readData("checkOrder", self.layerDefFile)[:-1].split(";")
+        defLayerTitle = self.defaultLayer
+        for orderNr in checkOrder:
+            layerTitle = self.order[int(orderNr)]
+            if self.layers[layerTitle]['object'].checkEntities(entities):
                 return layerTitle
-        return "new add-ons"
+        return defLayerTitle

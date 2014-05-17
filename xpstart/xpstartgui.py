@@ -8,7 +8,7 @@ class XpstartView(tk.Frame):
     def __init__(self,parent,xppath):
         
         tk.Frame.__init__(self, parent)
-        parent.title("xpstart 0.93")
+        parent.title("xpstart 0.94")
         self.END = tk.END
         
         self.fontStyle = tkFont.Font(family="Helvetica", size=9)
