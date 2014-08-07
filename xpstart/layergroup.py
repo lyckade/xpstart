@@ -1,23 +1,25 @@
+import os
+
 import scenery
 import xpstart
-import os
+
 
 class Layer(xpstart.Base):
     """
     The model for a scenery layer
     """
-    
-    def __init__(self,title,gui=None):
-        xpstart.Base.__init__(self,gui)
-        
+
+    def __init__(self, title, gui=None):
+        xpstart.Base.__init__(self, gui)
+
         self.gui = gui
-        
+
         self.title = title
-        #=======================================================================
+        # =======================================================================
         # Description will displayed in the gui to help the user
-        #=======================================================================
+        # =======================================================================
         self.description = ""
-        
+
         self.dataFile = "xpstart/layer_definitions.txt"
         #self.writeData("dataname", "Test")
         #=======================================================================
@@ -26,13 +28,11 @@ class Layer(xpstart.Base):
         # defaultRules['obj']['min'] = 1
         #=======================================================================
         self.defaultRules = {}
-        
+
         self.loadDefaultRules()
 
-        
-        
-    
-    def addDefaultRule(self,cmd):
+
+    def addDefaultRule(self, cmd):
         """
         Adds one comand to the defaultRules. Every command is in the logik
         "Entity->Rule->Value;"
@@ -43,8 +43,8 @@ class Layer(xpstart.Base):
         if not c[1] in self.defaultRules[c[0]]:
             self.defaultRules[c[0]][c[1]] = {}
         self.defaultRules[c[0]][c[1]] = c[2]
-        
-    def checkEntities(self,entities):
+
+    def checkEntities(self, entities):
         """
         Checks the entities with the defaultRules
         @param entities: entityName:Value
@@ -53,10 +53,10 @@ class Layer(xpstart.Base):
         """
         if len(self.defaultRules) == 0:
             return False
-        for entity,rules in self.defaultRules.items():
+        for entity, rules in self.defaultRules.items():
             if entity not in entities:
                 return False
-            for rule,val in rules.items():
+            for rule, val in rules.items():
                 if rule == "min" and int(val) > int(entities[entity]):
                     return False
                 elif rule == "max" and int(val) < int(entities[entity]):
@@ -74,12 +74,10 @@ class Layer(xpstart.Base):
                         return False
                     elif rule == "not_in" and str(entities[entity]) in l:
                         return False
- 
+
         return True
-                    
-            
-    
-    
+
+
     def loadDefaultRules(self):
         """
         Loads the rules
@@ -93,32 +91,27 @@ class Layer(xpstart.Base):
             for cmd in cmds:
                 if cmd is not "":
                     self.addDefaultRule(cmd)
-                    
-    
-        
-    
-    
+
 
 class Layergroup(xpstart.Base):
     """
     All sceneries of an x-plane installation can be grouped into layers.
     That helps to sort the sceneries.
     """
-    
-    def __init__(self,xpPath,gui=None):
-        xpstart.Base.__init__(self,gui)
+
+    def __init__(self, xpPath, gui=None):
+        xpstart.Base.__init__(self, gui)
         self.gui = gui
         if xpPath.endswith("/") or xpPath.endswith("\\"):
             xpPath = xpPath[:-1]
         self.xpPath = xpPath
-        
 
         self.title = "Default"
         """
         Title is important for the read and write methods and specify the
         instance. If not changed it will be the Default instance
         """
-        
+
         self.defaultLayer = "new add-ons"
 
         self.layers = {}
@@ -126,7 +119,7 @@ class Layergroup(xpstart.Base):
         Dict to store the layers object and other data
         The object is always found at self.layers[title]['object']
         """
-        
+
         self.order = []
         """
         List to get the Layers in the right order
@@ -134,46 +127,50 @@ class Layergroup(xpstart.Base):
 
         self.layerDefFile = "xpstart/layer_definitions.txt"
         """File were all the definitions to the layers are stored """
-        
-        
-        self.sceneryFolder = "Custom Scenery" #: The name of the sceneryFolder !Don't change!
-        
+
+        self.sceneryFolder = "Custom Scenery"  # : The name of the sceneryFolder !Don't change!
+
+        self.defaultSceneryLayer = self.readData("defaultSceneryLayer", self.layerDefFile)[:-1]
+        """The layer which contains the default scenery"""
+
         self.loadLayers()
         """All the Layers needs to be loaded"""
-        
+
         self.sceneries = self.loadXpSceneries()
         """All active sceneries of the XP installation are loaded as scenery objects"""
-        
-        
+
+
     def checkIcaos(self):
         """
         Walks over all layers and returns a dict with the layername icao an scenerynames
-        
         """
-        warnings = {} #: Dictionary where all the warnings are collected
+        warnings = {}  # : Dictionary where all the warnings are collected
         icaos = {}
-        for layer in self.layers:
+        for layer in self.order:
+            # for layer in self.layers:
+            if layer not in self.layers:
+                continue
             for icao in self.layers[layer]['icaos']:
                 if icao not in icaos:
                     icaos[icao] = []
                 for sc in self.layers[layer]['icaos'][icao]:
-                    
-                    icaos[icao].append({"title":sc,"layer":layer})
-                #icaos[icao] = icaos[icao] + self.layers[layer]['icaos'][icao]
+                    icaos[icao].append({"title": sc, "layer": layer})
+                    # icaos[icao] = icaos[icao] + self.layers[layer]['icaos'][icao]
         for icao in icaos:
-            if len(icaos[icao])>1:
+            if len(icaos[icao]) > 1:
                 warnings[icao] = icaos[icao]
         return warnings
-        
-#        for layer in self.layers:
-#            
-#            for icao in self.layers[layer]['icaos']:
-#                if len(self.layers[layer]['icaos'][icao])>1:
-#                    if layer not in warnings:
-#                        warnings[layer] = {}                    
-#                    warnings[layer][icao] = self.layers[layer]['icaos'][icao]
-#        return warnings
-    
+
+        # for layer in self.layers:
+
+    #
+    # for icao in self.layers[layer]['icaos']:
+    # if len(self.layers[layer]['icaos'][icao])>1:
+    #                    if layer not in warnings:
+    #                        warnings[layer] = {}
+    #                    warnings[layer][icao] = self.layers[layer]['icaos'][icao]
+    #        return warnings
+
     def loadLayers(self):
         """Loads the defined layers out of the dataFile and adds an Layer object
         to the self.layers list. 
@@ -187,25 +184,25 @@ class Layergroup(xpstart.Base):
                 continue
             self.order.append(title)
             self.layers[title] = {}
-            self.layers[title]['object'] = Layer(title,self.gui)
+            self.layers[title]['object'] = Layer(title, self.gui)
             # Make instance here for easy append later
             self.layers[title]['sceneries'] = []
             self.layers[title]['icaos'] = {}
-        
-        
+
+
     def loadXpSceneries(self):
         """
         Loads all sceneries and orders it in the self.layers[title]['sceneries'] dict
         """
-        sceneryPath = "%s/%s" % (self.xpPath,self.sceneryFolder)
+        sceneryPath = "%s/%s" % (self.xpPath, self.sceneryFolder)
         sceneries = {}
-        
+
         for entry in os.listdir(sceneryPath):
             # Path to the entry
-            abspath = "%s/%s" % (sceneryPath,entry)
+            abspath = "%s/%s" % (sceneryPath, entry)
             # A scenery has to be a directory
             if os.path.isdir(abspath):
-                sceneryObj = scenery.Scenery(abspath,self.gui)
+                sceneryObj = scenery.Scenery(abspath, self.gui)
                 sceneries[sceneryObj.title] = sceneryObj
                 # First the userLayer than authLayergoup than default
                 if sceneryObj.userLayer in self.layers:
@@ -219,7 +216,7 @@ class Layergroup(xpstart.Base):
                     self.layers[layerTitle]['sceneries'].append(sceneryObj.title)
                     # Icao Codes for a layer are collected
                     # All is put into a dictionary
-                    if len(sceneryObj.icaoCodes)>0:
+                    if len(sceneryObj.icaoCodes) > 0:
                         for icao in sceneryObj.icaoCodes:
                             if icao == "":
                                 continue
@@ -228,12 +225,14 @@ class Layergroup(xpstart.Base):
                                 self.layers[layerTitle]['icaos'][icao] = []
                             else:
                                 # Give out a warning!
-                                self.log("Warning: %s in scenery %s is not the first apearance of that icao in that layer!" % (icao,sceneryObj.title))
+                                self.log(
+                                    "Warning: %s in scenery %s is not the first apearance of that icao in that layer!" % (
+                                        icao, sceneryObj.title))
                             self.layers[layerTitle]['icaos'][icao].append(sceneryObj.title)
-                    #self.layers[layerTitle]['icaos'].append(sceneryObj.icaoCodes)
+                            # self.layers[layerTitle]['icaos'].append(sceneryObj.icaoCodes)
         return sceneries
-    
-    def makeSceneryEntities(self,scenery):
+
+    def makeSceneryEntities(self, scenery):
         """
         This method is called by loadDefaultRules. On this way additional entities
         can be added to the default layer definition.
@@ -253,15 +252,14 @@ class Layergroup(xpstart.Base):
             entities['library'] = 1
         else:
             entities['library'] = 0
-        
-        
+
         if scenery.aptDat:
             entities['aptdat'] = 1
         else:
             entities['aptdat'] = 0
         return entities
-    
-    def searchDefaultLayer(self,sceneryObj):
+
+    def searchDefaultLayer(self, sceneryObj):
         """
         Walks through the layers and make a check, if it is the defaultLayer to 
         the scenery object.
