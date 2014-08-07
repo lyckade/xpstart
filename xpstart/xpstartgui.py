@@ -337,6 +337,7 @@ class XpstartController:
             sceneries = doubleIcaos[icao]
             f.write("<p>Airport: <b><a href='http://apxp.info/airports/view/%s'>%s</a></b><br />" % (icao, icao))
             f.write("<ul>")
+
             for scenery in sceneries:
                 cssClassDef = ""
                 disabledTxt = ""

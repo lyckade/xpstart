@@ -143,11 +143,13 @@ class Layergroup(xpstart.Base):
     def checkIcaos(self):
         """
         Walks over all layers and returns a dict with the layername icao an scenerynames
-        
         """
         warnings = {}  # : Dictionary where all the warnings are collected
         icaos = {}
-        for layer in self.layers:
+        for layer in self.order:
+            # for layer in self.layers:
+            if layer not in self.layers:
+                continue
             for icao in self.layers[layer]['icaos']:
                 if icao not in icaos:
                     icaos[icao] = []
