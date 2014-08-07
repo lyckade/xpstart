@@ -1,5 +1,7 @@
 import os
+
 import xpstart
+
 
 class Scenery(xpstart.Base):
     """
@@ -171,6 +173,10 @@ class Scenery(xpstart.Base):
         Returns a list with all the ICAO codes find in the apt.dat file of the
         scenery. If there is no apt.dat file the list will be empty []
         """
+        if self.sceneryTxt:
+            sceneryTxtIcao = self.getTxtProperty("ICAO", self.pathSceneryTxt)
+            if sceneryTxtIcao is not "":
+                return [sceneryTxtIcao]
         # If there is no apt.dat an empty list is returned
         if not self.aptDat:
             return []

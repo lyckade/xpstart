@@ -7,6 +7,8 @@ from thread import start_new_thread
 class XpstartView(tk.Frame):
     def __init__(self, parent, xppath):
 
+        self.xppath = xppath
+
         tk.Frame.__init__(self, parent)
         parent.title("xpstart 0.95")
         self.END = tk.END
@@ -63,7 +65,7 @@ class XpstartView(tk.Frame):
             font=self.fontStyle,
         )
         self.sceneriesBox.grid(row=gridrowRight, column=2)
-        #self.sceneriesBox.pack(side=tk.LEFT)
+        # self.sceneriesBox.pack(side=tk.LEFT)
         self.sceneriesyScroll.config(command=self.sceneriesBox.yview)
 
         self.sceneriesBox.bind("<ButtonRelease-1>", self.setActiveScenery)
@@ -128,7 +130,10 @@ class XpstartView(tk.Frame):
 
         #----------------------------------------------- actions after the layer
         #self.loadLayers()
-        #self.loadSceneries()  
+        # self.loadSceneries()
+
+        self.doubleIcaos = {}
+        self.defaultSceneryDoubles = []
 
 
     def echo(self, txt):
@@ -155,13 +160,33 @@ class XpstartView(tk.Frame):
             self.loadLayers()
             self.loadSceneries()
             self.doubleIcaos = self.controller.lg.checkIcaos()
+            self.defaultSceneryDoubles = []
             if len(self.doubleIcaos) > 0:
                 output = 'Double ICAO codes detected: '
                 for icao in self.doubleIcaos:
                     output = '%s%s, ' % (output, icao)
+                    for layer_information in self.doubleIcaos[icao]:
+                        if layer_information['layer'] == self.controller.lg.defaultSceneryLayer:
+                            self.defaultSceneryDoubles.append(icao)
                 self.echo(output[:-1])
-            self.actionButton.config(text="Write scenery_packs.ini")
-            self.actionsStep = 4
+            if len(self.defaultSceneryDoubles) > 0:
+                output = 'Conflicts with default scenery at: %s' % (', '.join(self.defaultSceneryDoubles))
+                self.echo(output)
+                self.actionButton.config(text="Make exclusions for default scenery conflicts")
+                self.actionsStep = 20
+            else:
+                self.actionButton.config(text="Write scenery_packs.ini")
+                self.actionsStep = 4
+        elif self.actionsStep == 20:
+            import exclusion
+
+            excl = exclusion.Exclusion(self.xppath, self)
+            excl.open_archive("xpstart/ExclusionScenery.zip")
+            for icao in self.defaultSceneryDoubles:
+                excl.extract_scenery(icao)
+            excl.close_archive()
+            self.actionButton.config(text="Reload sceneries")
+            self.actionsStep = 3
         elif self.actionsStep == 3:
             self.controller.initialize()
             self.loadLayers()
@@ -215,7 +240,7 @@ class XpstartView(tk.Frame):
         # print self.controller.activeLayer
         # print self.controller.lg.order[int(self.layersBox.curselection()[0])]
         self.loadSceneries()
-        #print self.layersBox.curselection()
+        # print self.layersBox.curselection()
         #print data
 
     def setActiveScenery(self, data):
@@ -257,6 +282,7 @@ class XpstartController:
         self.activeLayer = ''
         self.xppath = xppath
         self.warningsFile = "xpstart/warnings.htm"
+
 
     def initialize(self):
         import scenerypacks

@@ -17,7 +17,7 @@ class Layer(xpstart.Base):
         self.title = title
         # =======================================================================
         # Description will displayed in the gui to help the user
-        #=======================================================================
+        # =======================================================================
         self.description = ""
 
         self.dataFile = "xpstart/layer_definitions.txt"
@@ -130,6 +130,9 @@ class Layergroup(xpstart.Base):
 
         self.sceneryFolder = "Custom Scenery"  # : The name of the sceneryFolder !Don't change!
 
+        self.defaultSceneryLayer = self.readData("defaultSceneryLayer", self.layerDefFile)[:-1]
+        """The layer which contains the default scenery"""
+
         self.loadLayers()
         """All the Layers needs to be loaded"""
 
@@ -160,7 +163,7 @@ class Layergroup(xpstart.Base):
 
     #
     # for icao in self.layers[layer]['icaos']:
-    #                if len(self.layers[layer]['icaos'][icao])>1:
+    # if len(self.layers[layer]['icaos'][icao])>1:
     #                    if layer not in warnings:
     #                        warnings[layer] = {}
     #                    warnings[layer][icao] = self.layers[layer]['icaos'][icao]
