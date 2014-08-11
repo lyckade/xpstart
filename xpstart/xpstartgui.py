@@ -10,7 +10,7 @@ class XpstartView(tk.Frame):
         self.xppath = xppath
 
         tk.Frame.__init__(self, parent)
-        parent.title("xpstart 0.95")
+        parent.title("xpstart 0.96")
         self.END = tk.END
 
         self.fontStyle = tkFont.Font(family="Helvetica", size=9)
@@ -166,7 +166,8 @@ class XpstartView(tk.Frame):
                 for icao in self.doubleIcaos:
                     output = '%s%s, ' % (output, icao)
                     for layer_information in self.doubleIcaos[icao]:
-                        if layer_information['layer'] == self.controller.lg.defaultSceneryLayer:
+                        if layer_information['layer'] == self.controller.lg.defaultSceneryLayer and not icao in \
+                                self.controller.lg.layers['Exclusion']['icaos']:
                             self.defaultSceneryDoubles.append(icao)
                 self.echo(output[:-1])
             if len(self.defaultSceneryDoubles) > 0:
