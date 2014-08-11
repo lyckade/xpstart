@@ -152,7 +152,16 @@ class Scenery(xpstart.Base):
         """
         Reads the user layer out of the cache. If no layer is availiable the value is ""
         """
-        return self.readData("userLayer", self.userFile)
+        userLayer = self.readData("userLayer", self.userFile)
+        # Because the file changed from dataFile to userFile
+        # If there is an entry in the old file the value is copied
+        if userLayer == "":
+            userLayer = self.readData("userLayer", self.dataFile)
+            if userLayer is not "":
+                self.writeUserLayer(userLayer)
+        return userLayer
+
+
 
 
     def loadSceneryTxt(self):
