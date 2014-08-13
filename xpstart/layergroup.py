@@ -21,7 +21,7 @@ class Layer(xpstart.Base):
         self.description = ""
 
         self.dataFile = "xpstart/layer_definitions.txt"
-        #self.writeData("dataname", "Test")
+        # self.writeData("dataname", "Test")
         #=======================================================================
         # The logik for defaultRules is to store them in a dictionary
         # Entity -> Rule -> Value
@@ -166,7 +166,7 @@ class Layergroup(xpstart.Base):
     #
     # for icao in self.layers[layer]['icaos']:
     # if len(self.layers[layer]['icaos'][icao])>1:
-    #                    if layer not in warnings:
+    # if layer not in warnings:
     #                        warnings[layer] = {}
     #                    warnings[layer][icao] = self.layers[layer]['icaos'][icao]
     #        return warnings
@@ -267,6 +267,9 @@ class Layergroup(xpstart.Base):
         """
         if len(self.layers) == 0:
             self.loadLayers()
+        # If there is a entry in the default DB this is returned
+        if sceneryObj.defaultDBLayer is not "" and sceneryObj.defaultDBLayer in self.layers:
+            return sceneryObj.defaultDBLayer
         entities = self.makeSceneryEntities(sceneryObj)
         checkOrder = self.readData("checkOrder", self.layerDefFile)[:-1].split(";")
         defLayerTitle = self.defaultLayer

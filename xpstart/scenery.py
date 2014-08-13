@@ -63,9 +63,16 @@ class Scenery(xpstart.Base):
         else:
             self.authLayergroup = ""
 
+        self.defaultDBLayer = self.getTxtProperty(self.title, "xpstart/default_scenery_db.txt", ":")
+
+        # if self.authLayergroup is "" and self.defaultDBLayer is "":
         self.counterObjects = self.getObjectCount()
         """Counts the objects and stores them into that parameter
         The parameter is a dictionary like the __objTypes"""
+        # else:
+        #    self.counterObjects = {}
+        #    for objType in self.objTypes:
+        #        self.counterObjects[objType] = 0
 
         self.icaoCodes = self.searchIcaoCodes()
         """Icao codes of the scenery if there is an apt.dat
