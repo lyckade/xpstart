@@ -243,9 +243,10 @@ class Layergroup(xpstart.Base):
         @type scenery: Instance of Scenery Object
         """
         #entities = {}
-        entities = scenery.counterObjects
+        counterObjects = scenery.getObjectCount()
+        entities = counterObjects
         # polter is the sum of pol and ter it is needed to indentify photo sceneries
-        entities['polter'] = scenery.counterObjects['pol'] + scenery.counterObjects['ter']
+        entities['polter'] = counterObjects['pol'] + counterObjects['ter']
         entities['icaos'] = len(scenery.icaoCodes)
         entities['title'] = scenery.title
         if scenery.libraryTxt:
