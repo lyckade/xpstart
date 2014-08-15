@@ -22,7 +22,7 @@ class Layer(xpstart.Base):
 
         self.dataFile = "xpstart/layer_definitions.txt"
         # self.writeData("dataname", "Test")
-        #=======================================================================
+        # =======================================================================
         # The logik for defaultRules is to store them in a dictionary
         # Entity -> Rule -> Value
         # defaultRules['obj']['min'] = 1
@@ -30,7 +30,6 @@ class Layer(xpstart.Base):
         self.defaultRules = {}
 
         self.loadDefaultRules()
-
 
     def addDefaultRule(self, cmd):
         """
@@ -167,7 +166,7 @@ class Layergroup(xpstart.Base):
     # for icao in self.layers[layer]['icaos']:
     # if len(self.layers[layer]['icaos'][icao])>1:
     # if layer not in warnings:
-    #                        warnings[layer] = {}
+    # warnings[layer] = {}
     #                    warnings[layer][icao] = self.layers[layer]['icaos'][icao]
     #        return warnings
 

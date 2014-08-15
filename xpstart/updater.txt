@@ -1,0 +1,2 @@
+xpstart/default_scenery_db.txt
+xpstart/layer_definitions.txt
