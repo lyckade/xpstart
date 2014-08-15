@@ -1,3 +1,4 @@
+xpstart/__init__.py
 xpstart/default_scenery_db.txt
 xpstart/exclusion.py
 xpstart/ExclusionScenery.zip
