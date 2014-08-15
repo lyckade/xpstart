@@ -1,2 +1,11 @@
 xpstart/default_scenery_db.txt
+xpstart/exclusion.py
+xpstart/ExclusionScenery.zip
 xpstart/layer_definitions.txt
+xpstart/layergroup.py
+xpstart/scenery.py
+xpstart/scenerypacks.py
+xpstart/style.css
+xpstart/xpstart.py
+xpstart/xpstartgui.py
+xpstart.py

@@ -18,6 +18,11 @@ class GithubUpdater:
         Loads the configuration file
         :return:
         """
+        import os
+
+        if not os.path.exists("xpstart"):
+            os.makedirs("xpstart")
+        self.load_file(self.ini_file)
         self.files = []
         conf_file = open(self.ini_file, "r")
         for l in conf_file:
