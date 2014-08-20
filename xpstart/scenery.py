@@ -178,7 +178,11 @@ class Scenery(xpstart.Base):
             c = l.split(delimiter)
             scenery_title = c[0].strip()
             layer = " ".join(c[1:]).strip()
-            if scenery_title.endswith("*"):
+            if scenery_title.startswith("*") and scenery_title.endswith("*"):
+                if scenery_title[1:-1] in self.title:
+                    f.close()
+                    return layer
+            elif scenery_title.endswith("*"):
                 if self.title.startswith(scenery_title[:-1]):
                     f.close()
                     return layer

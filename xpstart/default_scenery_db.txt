@@ -30,3 +30,4 @@ zzz_new_zealand:Ground mesh
 zzz_new_zealand_overlay:OSM scenery
 zPhotoXP*:Phototextures
 z+*:Phototextures
+*OSM*:OSM scenery
