@@ -63,7 +63,7 @@ class Scenery(xpstart.Base):
         else:
             self.authLayergroup = ""
 
-        self.defaultDBLayer = self.getTxtProperty(self.title, "xpstart/default_scenery_db.txt", ":")
+        self.defaultDBLayer = self.searchDefaultDBLayer()
 
         self.icaoCodes = self.searchIcaoCodes()
         """Icao codes of the scenery if there is an apt.dat
@@ -169,6 +169,27 @@ class Scenery(xpstart.Base):
                     print "H"
                     # TODO
             f.close()
+
+    def searchDefaultDBLayer(self):
+        default_db_file = "xpstart/default_scenery_db.txt"
+        delimiter = ":"
+        f = open(default_db_file, "r")
+        for l in f:
+            c = l.split(delimiter)
+            scenery_title = c[0].strip()
+            layer = " ".join(c[1:]).strip()
+            if scenery_title.endswith("*"):
+                if self.title.startswith(scenery_title[:-1]):
+                    f.close()
+                    return layer
+                else:
+                    continue
+            elif scenery_title == self.title:
+                f.close()
+                return layer
+        f.close()
+        return ""
+
 
     def searchIcaoCodes(self):
         """

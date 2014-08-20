@@ -23,9 +23,10 @@ Aerosoft - LSGG Genf:Default scenery
 KSEA Demo Terrain:Ground mesh
 RescueX_Terrain:Ground mesh
 missionx:Airport
-Lzzz_gTreelines_Farms_Europe_v2:OSM scenery
 OpenSceneryX:Library
 zzz_Treelines_Farms_North_America_v2:OSM scenery
 zzz_Treelines_Farms_Europe_v2:OSM scenery
 zzz_new_zealand:Ground mesh
 zzz_new_zealand_overlay:OSM scenery
+zPhotoXP*:Phototextures
+z+*:Phototextures
