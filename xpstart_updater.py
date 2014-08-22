@@ -57,6 +57,7 @@ class GithubUpdater:
         if self.no_update:
             return False
         import urllib
+
         remote_base_url = self._make_git_raw_base_url()
         remote_url = "%s%s" % (remote_base_url, file_path)
         self.echo("Loading %s from github" % (file_path))
@@ -67,7 +68,10 @@ class GithubUpdater:
 
     def make_md_hash(self, file_path):
         import hashlib
+        import os.path
 
+        if not os.path.exists(file_path):
+            return ""
         include_line = ""
         m = hashlib.md5()
         try:
@@ -116,4 +120,5 @@ updater.git_branch = "master"
 updater.ini_file = "xpstart/updater.txt"
 updater.add_folder("xpstart")
 updater.update()
-# updater.update_ini_file()
+raw_input("Update is completed. Press Enter to exit this window.")
+
