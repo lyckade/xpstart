@@ -9,7 +9,7 @@ class Base():
         # =======================================================================
         # Object Types
         # Used for counting the objects
-        #=======================================================================
+        # =======================================================================
         self.objTypes = [
             "ags",
             "dsf",
@@ -60,16 +60,16 @@ class Base():
             self.gui.echo(txt)
 
 
-    def getTxtProperty(self, property, path):
+    def getTxtProperty(self, property, path, delimiter=" "):
         """
         Method to get the value of a property which is defined in a txt file
         """
         f = open(path, "r")
         for l in f:
-            c = l.split()
+            c = l.split(delimiter)
             if c[0].strip() == property:
                 f.close()
-                return " ".join(c[1:])
+                return " ".join(c[1:]).strip()
         f.close()
         return ""
 
@@ -156,7 +156,7 @@ class Base():
         open(dataFile, "a").close()
         cf = open(dataFile, "r")
         # dataTuple = (self.__class__.__name__,self.title,dataname,data)
-        #datastring = "%s:%s:%s:%s" % (self.__class__.__name__,self.title,dataname,data)
+        # datastring = "%s:%s:%s:%s" % (self.__class__.__name__,self.title,dataname,data)
         datastring = ":".join((self.__class__.__name__, self.title, dataname, data))
         append = True
         for l in cf:

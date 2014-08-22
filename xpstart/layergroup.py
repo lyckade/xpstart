@@ -21,8 +21,8 @@ class Layer(xpstart.Base):
         self.description = ""
 
         self.dataFile = "xpstart/layer_definitions.txt"
-        #self.writeData("dataname", "Test")
-        #=======================================================================
+        # self.writeData("dataname", "Test")
+        # =======================================================================
         # The logik for defaultRules is to store them in a dictionary
         # Entity -> Rule -> Value
         # defaultRules['obj']['min'] = 1
@@ -30,7 +30,6 @@ class Layer(xpstart.Base):
         self.defaultRules = {}
 
         self.loadDefaultRules()
-
 
     def addDefaultRule(self, cmd):
         """
@@ -166,8 +165,8 @@ class Layergroup(xpstart.Base):
     #
     # for icao in self.layers[layer]['icaos']:
     # if len(self.layers[layer]['icaos'][icao])>1:
-    #                    if layer not in warnings:
-    #                        warnings[layer] = {}
+    # if layer not in warnings:
+    # warnings[layer] = {}
     #                    warnings[layer][icao] = self.layers[layer]['icaos'][icao]
     #        return warnings
 
@@ -243,9 +242,10 @@ class Layergroup(xpstart.Base):
         @type scenery: Instance of Scenery Object
         """
         #entities = {}
-        entities = scenery.counterObjects
+        counterObjects = scenery.getObjectCount()
+        entities = counterObjects
         # polter is the sum of pol and ter it is needed to indentify photo sceneries
-        entities['polter'] = scenery.counterObjects['pol'] + scenery.counterObjects['ter']
+        entities['polter'] = counterObjects['pol'] + counterObjects['ter']
         entities['icaos'] = len(scenery.icaoCodes)
         entities['title'] = scenery.title
         if scenery.libraryTxt:
@@ -267,6 +267,9 @@ class Layergroup(xpstart.Base):
         """
         if len(self.layers) == 0:
             self.loadLayers()
+        # If there is a entry in the default DB this is returned
+        if sceneryObj.defaultDBLayer is not "" and sceneryObj.defaultDBLayer in self.layers:
+            return sceneryObj.defaultDBLayer
         entities = self.makeSceneryEntities(sceneryObj)
         checkOrder = self.readData("checkOrder", self.layerDefFile)[:-1].split(";")
         defLayerTitle = self.defaultLayer
