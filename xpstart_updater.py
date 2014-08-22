@@ -112,8 +112,8 @@ class GithubUpdater:
 updater = GithubUpdater()
 updater.git_user = "lyckade"
 updater.git_repository = "xpstart"
-updater.git_branch = "development"
+updater.git_branch = "master"
 updater.ini_file = "xpstart/updater.txt"
 updater.add_folder("xpstart")
-# updater.update()
-updater.update_ini_file()
+updater.update()
+# updater.update_ini_file()
