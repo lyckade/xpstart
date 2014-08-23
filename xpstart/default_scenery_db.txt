@@ -1,3 +1,4 @@
+ABSim_LJPZ_Photoscenery:Phototextures
 Aerosoft - EBBR Brussels:Default scenery
 Aerosoft - EDDF Frankfurt:Default scenery
 Aerosoft - EDDH Hamburg:Default scenery
@@ -22,12 +23,16 @@ Aerosoft - LPFR Faro:Default scenery
 Aerosoft - LSGG Genf:Default scenery
 KSEA Demo Terrain:Ground mesh
 RescueX_Terrain:Ground mesh
+Mallorca_Forests:OSM scenery
+Mallorca_Terrain:Ground mesh
 missionx:Airport
 OpenSceneryX:Library
+RescueX_Lib:Library
 zzz_Treelines_Farms_North_America_v2:OSM scenery
 zzz_Treelines_Farms_Europe_v2:OSM scenery
 zzz_new_zealand:Ground mesh
 zzz_new_zealand_overlay:OSM scenery
 zPhotoXP*:Phototextures
 z+*:Phototextures
+*G2xpl*:Phototextures
 *OSM*:OSM scenery

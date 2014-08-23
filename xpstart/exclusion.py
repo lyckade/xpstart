@@ -13,7 +13,7 @@ class Exclusion(xpstart.Base):
 
         self.scenery_path = "%s/Custom Scenery" % (self.xp_path)
 
-        self.exclusions_archive_file = "ExclusionScenery.zip"
+        self.exclusions_archive_file = "xpstart/ExclusionScenery.zip"
         self.exclusions_archive = False
 
 
