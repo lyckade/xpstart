@@ -1,5 +1,5 @@
 xpstart/__init__.py:d41d8cd98f00b204e9800998ecf8427e
-xpstart/default_scenery_db.txt:79723b36d2106ddf478acd0dcb9b9739
+xpstart/default_scenery_db.txt:65cf146b0b43ffd7630c6ac028e7cb4f
 xpstart/exclusion.py:d7f64dd345ce11218de0f542b9eca901
 xpstart/ExclusionScenery.zip:e88f883aaa9e0296f48565886b2428cf
 xpstart/layer_definitions.txt:a715a560f1618ca60b166b77aac97a17
