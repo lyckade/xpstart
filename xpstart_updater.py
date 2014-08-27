@@ -119,6 +119,6 @@ updater.git_repository = "xpstart"
 updater.git_branch = "master"
 updater.ini_file = "xpstart/updater.txt"
 updater.add_folder("xpstart")
-updater.update()
+updater.update_ini_file()
 raw_input("Update is completed. Press Enter to exit this window.")
 

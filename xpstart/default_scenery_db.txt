@@ -21,7 +21,7 @@ Aerosoft - LFPG Paris CDG:Default scenery
 Aerosoft - LFPO Paris Orly:Default scenery
 Aerosoft - LPFR Faro:Default scenery
 Aerosoft - LSGG Genf:Default scenery
-EDDH_Hamburg2003:OSM scenery
+Hamburg2003:OSM scenery
 EDHL_Luebeck-Blankensee overlay:Phototextures
 KSEA Demo Terrain:Ground mesh
 flags_world:Library

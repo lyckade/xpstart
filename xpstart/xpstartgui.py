@@ -343,7 +343,7 @@ class XpstartController:
             for scenery in sceneries:
                 cssClassDef = ""
                 disabledTxt = ""
-                if self.scenerypacks.packs[scenery["title"]] == "SCENERY_PACK_DISABLED":
+                if scenery["title"] in self.scenerypacks.packs and self.scenerypacks.packs[scenery["title"]] == "SCENERY_PACK_DISABLED":
                     cssClassDef = " class='disabled' "
                     disabledTxt = "<b>Scenery disabled:</b> "
                 f.write("<li%s>%s%s (%s)</li>" % (cssClassDef, disabledTxt, scenery["title"], scenery["layer"]))
@@ -368,6 +368,3 @@ class XpstartController:
     def writeSceneryPacksIni(self):
         self.scenerypacks.order = self.getAllSceneries()
         self.scenerypacks.writeIniFile()
-        
-
-        
